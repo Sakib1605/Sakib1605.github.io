@@ -10,7 +10,7 @@ redirect_from:
 As an aspiring data scientist, I am passionate about leveraging data to solve complex problems and drive impactful decisions. My continuous learning and curiosity fuel my commitment to mastering new tools and techniques in data analysis, machine learning, and statistical modeling. I am eager to embrace new challenges and apply my analytical skills to uncover insights, enhance business outcomes, and innovate in the fast-evolving field of data science. 
 
 # Work Experience
-======
+
 **Graduate Research Assistant : Institutional Research & Planning (IRP) | University of Guelph**  
 *May 2024 -- August 2024*  
 - Implemented an Exponential Smoothing model to forecast undergraduate enrollment for the next five years across various academic terms, optimizing predictions for institutional planning.
@@ -33,7 +33,7 @@ As an aspiring data scientist, I am passionate about leveraging data to solve co
 
 
 # Education
-======
+
 **Master of Data Science (MDS) | University of Guelph, Canada**  
 *September 2023 -- August 2024*  
 - **GPA:** 91.33  
