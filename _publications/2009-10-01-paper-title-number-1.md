@@ -1,7 +1,7 @@
 ---
 title: "Projects"
-collection: Project
-
+collection: publications
+excerpt: "Checking"
 ---
 
 **Analysis of Big Data Project: Exploratory Data Analysis using PySpark**  
