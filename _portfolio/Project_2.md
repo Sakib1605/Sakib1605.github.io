@@ -1,8 +1,8 @@
 ---
-title: "Early Patient Readmission Prediction"
+title: "Machine Learning Project: Movie Recommendation & Insights Analysis"
 collection: Projects
 permalink: /portfolio/Project_2
-excerpt: 'Developed a machine learning pipeline to predict early patient readmissions using a decade of clinical records from 130 US hospitals. Extensive data preprocessing was performed, class imbalance was addressed using SMOTE, and multiple models including Logistic Regression and Random Forest were evaluated, achieving the highest accuracy of 62.2%. Visualization techniques such as ROC curves and confusion matrices were used to assess model performance.'
+excerpt: 'Utilized natural language processing (NLP) and machine learning techniques to extract valuable insights from a movie dataset. Developed a content-based movie recommendation system that suggests films based on similarities in movie descriptions, leveraging NLP to analyze and compare textual data. Implemented multilabel genre classification by analyzing movie overviews, enabling the categorization of films into multiple genres simultaneously. Additionally, predicted movie ratings using various features such as genre, budget, and revenue, applying machine learning methods and feature importance analysis.'
 #slidesurl: 'http://academicpages.github.io/files/slides1.pdf'
 #paperurl: 'http://academicpages.github.io/files/paper1.pdf'
 #citation: 'Your Name, You. (2009). &quot;Paper Title Number 1.&quot; <i>Journal 1</i>. 1(1).'
@@ -11,92 +11,93 @@ excerpt: 'Developed a machine learning pipeline to predict early patient readmis
 
 ## Introduction
 
-Hospital readmissions, especially early readmissions within 30 days of discharge, are a significant concern in healthcare management. Readmissions not only indicate potential shortcomings in post-discharge care but also contribute to increased healthcare costs. Predicting early readmissions can help hospitals improve patient care, allocate resources more effectively, and reduce operational costs. In this project, the objective is to leverage machine learning models to predict whether a patient will be readmitted within 30 days of discharge, based on historical clinical data.
+With the plethora of movies available on the internet these days, viewers often face difficulty in finding movies that align with their interests. Relying entirely on genre-based searches may overlook individual preferences, highlighting the importance of content-based movie suggestions. By leveraging movie descriptions and plot summaries, content-based movie recommendation systems can facilitate the exploration of similar movies that match viewer preferences.
 
-The dataset used in this project comprises a decade's worth of clinical records from 130 US hospitals, containing patient demographic details, admission history, diagnostic codes, and medication information. A total of 101,766 records representing 71,518 unique patients are analyzed. The project focuses on transforming the raw dataset into a format suitable for predictive modeling through various data preprocessing techniques, including handling missing data, removing duplicates, and categorizing diagnostic codes.
+Moreover, genre classification based on movie plot descriptions facilitates efficient genre categorization by identifying frequently used words in movie descriptions or themes associated with genres. Accurate genre classification helps audiences find movies that align with their preferred genres.
 
-Several machine learning models are implemented to predict patient readmission, including Logistic Regression, Random Forest, Support Vector Machines (SVM), and Gradient Boosting, among others. By applying Synthetic Minority Over-sampling Technique (SMOTE) to address class imbalance, the models are trained and evaluated based on their accuracy and F1-score. Visualization techniques, such as ROC curves and confusion matrices, are used to evaluate the performance of each model.
+Understanding audience preferences and gaining insights into factors influencing movie success is crucial in the film industry. This emphasizes the need for exploratory analysis and movie ratings prediction, which offers insights into key features contributing to a movie’s success and helps understand audience preferences.
 
-The ultimate goal of this project is to determine the most effective machine learning model for predicting early patient readmissions, which can be applied in hospital systems to optimize patient outcomes and resource allocation.
+The motivation behind this project lies in enhancing movie exploration and improving user satisfaction by suggesting more relevant movies, effectively categorizing movies into genres based on content, and uncovering key features associated with audience engagement.
 
+## Problem Statement
 
-## Data Preprocessing
+The primary objective of the project is to employ natural language processing (NLP) and machine learning methods to derive meaningful insights from a movie dataset. The project comprises three tasks:
 
-### 1. Removing Duplicate Records
-- The dataset contains duplicate entries based on patient numbers (`patient_nbr`). To maintain data integrity, these duplicates are removed, ensuring each patient is represented only once.
+- **Content-based Movie Recommendation**: Develop a content-based recommendation system using NLP techniques to suggest movies based on similarities in movie descriptions. This involves analyzing movie descriptions and identifying semantic similarities.
+  
+- **Genre Classification Based on Movie Content**: Use NLP techniques to analyze textual content from movie overviews and develop classification models to categorize movies into multiple genres simultaneously. This is a multilabel classification problem.
+  
+- **Movie Ratings Prediction**: Predict movie ratings by analyzing features such as genre, budget, revenue, runtime, language, and production companies. Conduct feature importance analysis to identify key factors impacting movie ratings.
 
-### 2. Handling Missing Data
-- Columns with a high proportion of missing values, such as `weight`, `payer_code`, and `medical_specialty`, are dropped.
-- Missing values in the `race` column are imputed using the most frequent race category.
+## Method
 
-### 3. Removing Uninformative Features
-- Irrelevant features, including `encounter_id`, `patient_nbr`, and highly imbalanced columns (where over 98% of the values are the same), are removed to optimize classification.
+### 3.1 Dataset Information and Preprocessing
 
-### 4. Categorizing Diagnostic Features
-- The diagnostic columns (`diag_1`, `diag_2`, `diag_3`) are categorized using ICD-9 codes, improving interpretability.
+- **Dataset**: Data on 50 movies with 26 feature columns was initially extracted via web scraping from IMDb. This data was merged with a publicly available movie dataset from Kaggle, resulting in a final dataframe of 432,410 movies with 20 feature columns.
 
-### 5. Mapping Admission, Source, and Discharge Categories
-- Admission types, admission sources, and discharge types are replaced with descriptive categories, consolidating similar meanings into one category (e.g., mapping ‘Urgent’ to ‘Emergency’).
+- **Preprocessing Steps**:
+  1. **Handling Duplicate Movie Names**: Removed duplicate entries to ensure unique representation of each movie.
+  2. **Handling Missing Values**: Removed columns with high percentages of missing values and imputed missing values for some categorical columns.
+  3. **Data Type Conversion**: Converted columns to appropriate data types for consistency in analysis.
+  4. **Handling Outliers**: Removed movies with unusual runtimes.
+  5. **Feature Extraction**: Extracted release year and month from the release date.
+  6. **One-hot Encoding for Genres**: Applied one-hot encoding to convert genre categories into binary features.
+  7. **Text Preprocessing**: Preprocessed movie overviews by removing punctuation, eliminating stop words, and converting text to lowercase.
+  8. **Removing Unnecessary Columns**: Removed irrelevant columns for movie ratings prediction.
+  9. **Scaling Numerical Features**: Scaled numerical features to prevent feature dominance.
 
-### 6. Handling Age Feature
-- Age ranges are converted into numerical values, with each range assigned a numeric value to correlate with the likelihood of readmission.
+### 3.2 Modelling
 
-### 7. Removing Outliers
-- Outliers in numeric columns are removed based on boxplot analysis to ensure consistency.
+- **Movie Recommendation System**:
+  - **Word2Vec Approach**: Utilized word embeddings to capture semantic relationships. Combined "title," "overview," and "genre" columns into a "content" column, trained the Word2Vec model, and calculated cosine similarity to recommend similar movies.
+  
+  - **TF-IDF Approach**: Used TF-IDF vectorization to convert text data into numerical vectors. Calculated cosine similarity to suggest top 10 similar movies.
 
-### 8. Handling Drug Medication Features
-- Drug-related features with imbalanced distributions are dropped.
+- **Movie Genre Classification**:
+  - Applied preprocessing techniques to movie content text data, converted text into numerical vectors using TF-IDF, and trained classification models such as Logistic Regression, Random Forest, Gradient Boosting, and Adaboost Classifier. Evaluated models using precision, recall, and f1-score.
 
-### 9. Transforming Glucose Serum Levels
-- The `max_glu_serum` feature is mapped to numeric values: `None` (0), `Norm` (1), `>200` (2), and `>300` (2).
+- **Movie Ratings Prediction**:
+  - Trained various regression models including Linear Regression, Ridge Regression, Support Vector Regressor, Decision Tree Regressor, Random Forest, Extreme Gradient Boosting, and Bagging Regressor. Evaluated model performance using MSE and MAE, and conducted feature importance analysis.
 
-### 10. Handling Diabetes Medication
-- The `diabetesMed` column is converted to numeric values: `No` (0) and `Yes` (1), due to its observed correlation with readmission rates.
+## Results and Discussion
 
-### 11. Change of Medications
-- The `change` column is transformed into numeric: `No` (0) and `Yes` (1), reflecting the impact of medication changes on readmission rates.
+### 4.1 Results for Exploratory Data Analysis
 
-### 12. Target Variable Transformation
-- The target variable (`readmitted`) is mapped to numeric values: `NO` (0), `>30` (1), and `<30` (2).
+- **Genre Analysis**:
+  - Distribution of movie counts across genres shows Drama, Documentary, and Comedy as the most prevalent genres.
+  - Most common words in movie descriptions vary by genre, providing insights into content variations.
+  - Co-occurrences of genres reveal patterns such as Action movies frequently co-occurring with Drama and Adventure.
 
-### 13. Categorical Feature Encoding
-- One-hot encoding is applied to transform categorical features into numeric format.
+- **Rating Analysis**:
+  - Documentary and Animation genres receive higher average ratings from 2010 to 2023.
 
-### 14. Addressing Class Imbalance
-- SMOTE (Synthetic Minority Over-Sampling Technique) is applied to balance the class distribution, improving the generalization and prediction capabilities of the model.
+- **Revenue Analysis**:
+  - Average revenue for certain genres decreased from 2021 to 2022, with increases in genres like Action and Adventure.
 
-### 15. Data Split
-- The dataset is split into training and testing sets, with 10% allocated for testing purposes.
+- **Runtime Analysis**:
+  - Movies with runtimes between 120-180 minutes have the highest average popularity.
 
-## Model Accuracy Analysis
+- **Movie Language Analysis**:
+  - English is the most prevalent language in the dataset.
 
-Multiple machine learning models were evaluated using training and testing accuracy, and F1 scores (micro). The results are summarized below:
+- **Popularity Analysis**:
+  - Adventure is the most popular genre in 2023.
 
-| Model                  | Training Accuracy | Testing Accuracy | F1-Score (Micro) |
-|------------------------|-------------------|------------------|------------------|
-| Logistic Regression     | 0.634             | 0.622            | 0.622            |
-| Decision Tree           | 0.638             | 0.572            | 0.572            |
-| K Nearest Neighbor      | 0.719             | 0.546            | 0.546            |
-| Naive Bayes             | 0.576             | 0.531            | 0.531            |
-| Support Vector Machine  | 0.675             | 0.617            | 0.617            |
-| Random Forest           | 0.785             | 0.612            | 0.612            |
-| Gradient Boosting       | 0.736             | 0.609            | 0.608            |
-| Bagging Classifier      | 0.689             | 0.604            | 0.604            |
-| Adaboost Classifier     | 0.775             | 0.589            | 0.589            |
+### 4.2 Machine Learning Results
 
-## Visualization & Evaluation
+- **Movie Recommendation System Results**:
+  - Both Word2Vec and TF-IDF approaches effectively recommend movies similar to the selected movie based on content and genre.
 
-### 1. ROC Curves and AUC
-ROC curves and AUC (Area Under Curve) values were used to assess the ability of each model to correctly classify instances across different classes.
+- **Genre Classification Results**:
+  - Logistic Regression performed well for certain genres, while Random Forest and Gradient Boosting also showed effective results for specific genres. Adaboost Classifier had moderate performance.
 
-### 2. Confusion Matrix
-A heatmap of the confusion matrix was used to visualize the model’s effectiveness by showing counts of correctly and incorrectly predicted instances.
-
-### 3. Bar Plots
-Two bar plots were generated:
-- One demonstrating the testing accuracy for each model.
-- One illustrating F1 scores for each model.
+- **Movie Ratings Prediction Results**:
+  - Ensemble methods like Random Forest, Gradient Boosting, and Bagging Regressor outperformed individual models. Feature importance analysis identified rating count, runtime, release year, and popularity as significant factors affecting movie ratings.
 
 ## Conclusion
-From the testing accuracy and F1-score comparisons, it was observed that Logistic Regression, Support Vector Machine (SVM), Random Forest, Gradient Boosting, and Bagging Classifier outperformed Decision Tree, KNN, Naive Bayes, and Adaboost Classifier. The best accuracy achieved was 0.622, with Logistic Regression performing the best overall.
 
+The project successfully employed NLP and machine learning techniques to address challenges in movie recommendations, genre classification, and ratings prediction. Key contributions include enhanced movie discovery, effective content categorization, and valuable audience insights. This project improves movie exploration, categorization, and understanding of factors influencing movie success.
+
+## References
+
+[1] Asaniczka. (2023). TMDB Movies Dataset. Retrieved from: [Kaggle TMDB Movies Dataset](https://www.kaggle.com/datasets/asaniczka/tmdb-movies-dataset-2023-930k-movies)

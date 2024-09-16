@@ -1,6 +1,5 @@
 ---
 title: "Technical Skills"
-collection: talks
 ---
 
 
