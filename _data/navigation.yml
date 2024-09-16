@@ -6,11 +6,13 @@
 
 main:
 
-  - title: "Projects"
-    url: /portfolio/
+  
 
   - title: "CV"
     url: /files/Resume_Mohammad.pdf
+
+  - title: "Projects"
+    url: /portfolio/
   
   #- title: "Projects"
   #  url: /publications/
@@ -19,7 +21,7 @@ main:
   #  url: /talks/    
 
   #- title: "Teaching"
-    url: /teaching/    
+  #  url: /teaching/    
     
  
         
