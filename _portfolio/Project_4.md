@@ -3,10 +3,12 @@ title: "Neural Network Project: Symptom Driven Plant Disease Classification"
 collection: Projects
 permalink: /portfolio/Project_4
 excerpt: 'Designed a plant disease diagnosis system using Gemini-Vision-Pro for extracting visual features and generating symptom descriptions from images. Integrated these insights with a multi-modal fusion model to compare symptom based and image-based classification methods, improving classification accuracy.'
-#slidesurl: 'http://academicpages.github.io/files/slides1.pdf'
+slidesurl: 'https://github.com/Sakib1605/Symptom_Driven_Plant_Disease_Classification/blob/main/CIS_6050_Neural_Network_Project_Report.pdf'
 #paperurl: 'http://academicpages.github.io/files/paper1.pdf'
 #citation: 'Your Name, You. (2009). &quot;Paper Title Number 1.&quot; <i>Journal 1</i>. 1(1).'
 ---
+[Github_Repository_Link](https://github.com/Sakib1605/Symptom_Driven_Plant_Disease_Classification)
+
 
 ## Abstract
 This project presents a novel approach to plant disease diagnosis by combining image-based classification with predictive symptom analysis. By leveraging both visual and textual features, the approach moves beyond traditional image-only methods, providing a more comprehensive diagnostic tool. The multi-modal system incorporates four Convolutional Neural Network (CNN) models: VGG16, DenseNet, InceptionV3, and a custom-built CNN. DenseNet outperformed other models with a training accuracy of 95.5% and a validation accuracy of 85%. This approach enhances disease diagnosis and has significant potential for sustainable agriculture by providing effective tools for early detection.

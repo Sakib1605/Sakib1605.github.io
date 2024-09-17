@@ -5,12 +5,13 @@ permalink: /portfolio/Project_1
 excerpt: 'Analyzed healthcare accessibility in Toronto to identify optimal locations for new facilities and improve emergency response. Applied spatial analysis techniques, including spatial clustering and kernel density estimation (KDE), to locate areas with high demand and underserved populations. Utilized Inverse Distance Weighting (IDW) for estimating
 healthcare demand and identifying suitable new facility locations. Employed road network analysis with Dijkstra’s
 algorithm to determine the shortest routes to existing facilities, enhancing emergency response strategies.'
-slidesurl: 'https://github.com/Sakib1605/Healthcare_Accessibility_Analysisis/blob/main/Final%20Report.pdf'
+slidesurl: 'https://github.com/Sakib1605/Healthcare_Accessibility_Analysis/blob/main/Final%20Report.pdf'
 #reporturl: 'https://github.com/Sakib1605/Healthcare_Accessibility_Analysisis/blob/main/Final%20Report.pdf'
 #citation: 'Your Name, You. (2009). &quot;Paper Title Number 1.&quot; <i>Journal 1</i>. 1(1).'
 ---
 
 [Github_Repository_Link](https://github.com/Sakib1605/Healthcare_Accessibility_Analysis)
+
 ## Executive Summary
 
 Healthcare accessibility is vital in a city like Toronto, where disparities in access to services can significantly affect health outcomes, particularly for vulnerable groups such as the elderly and low-income residents. This project aims to propose new locations for healthcare facilities and identify the shortest routes to existing facilities. Advanced spatial interpolation methods like Kriging and Inverse Distance Weighting (IDW) were used to identify underserved areas, with a focus on the northern and eastern parts of the city. This analysis offers insights that can aid city planners in improving healthcare accessibility and equity.

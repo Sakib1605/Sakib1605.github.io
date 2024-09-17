@@ -3,11 +3,12 @@ title: "Early Patient Readmission Prediction"
 collection: Projects
 permalink: /portfolio/Project_5
 excerpt: 'Developed a machine learning pipeline to predict early patient readmissions using a decade of clinical records from 130 US hospitals. Extensive data preprocessing was performed, class imbalance was addressed using SMOTE, and multiple models including Logistic Regression and Random Forest were evaluated, achieving the highest accuracy of 62.2%. Visualization techniques such as ROC curves and confusion matrices were used to assess model performance.'
-#slidesurl: 'http://academicpages.github.io/files/slides1.pdf'
+slidesurl: 'https://github.com/Sakib1605/Early_Patient_Readmission_Prediction/blob/main/mohammad_data_6300_project.pdf'
 #paperurl: 'http://academicpages.github.io/files/paper1.pdf'
 #citation: 'Your Name, You. (2009). &quot;Paper Title Number 1.&quot; <i>Journal 1</i>. 1(1).'
 ---
 
+[Github_Repository_Link](https://github.com/Sakib1605/Early_Patient_Readmission_Prediction)
 
 ## Introduction
 
