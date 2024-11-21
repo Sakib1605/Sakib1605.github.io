@@ -11,25 +11,27 @@ As an aspiring data scientist, I am passionate about leveraging data to solve co
 
 # Work Experience
 
-**Graduate Research Assistant : Institutional Research & Planning (IRP) | University of Guelph**  
-*May 2024 -- August 2024*  
-- Implemented an Exponential Smoothing model to forecast undergraduate enrollment for the next five years across various academic terms, optimizing predictions for institutional planning.
-- Automated the forecasting process using Tableau Prep to evaluate the impact of diverse intake scenarios for domestic and international students.
+### Data Analyst (Contract Project) | Sollio Agriculture, Canada  
+**October 2024 – November 2024**  
+- Developed a user-friendly Excel dashboard with advanced VBA functionality, enabling users to search and retrieve product data by multiple criteria and adjust product-specific values with automatic updates across the dataset.  
+- Collaborated closely with stakeholders to discuss requirements and gather feedback, ensuring the dashboard design aligned with business needs and enhanced user experience.
+
+### Data Analyst Intern: Institutional Research & Planning (IRP) | University of Guelph, Canada  
+**May 2024 – August 2024**  
+- Implemented time-series forecasting model to predict undergraduate enrollment for the next five years across various academic terms, optimizing predictions for institutional planning.  
+- Automated the forecasting process using Tableau Prep to evaluate the impact of diverse intake scenarios for domestic and international students.  
 - Designed an interactive Tableau dashboard to display enrollment predictions, providing insights for informed decision-making and strategic planning.
 
----
-
-**Graduate Teaching Assistant | University of Guelph**  
-*September 2023 -- April 2024*  
-- Graded assignments and exams with precision, offering detailed feedback to enhance student performance.
+### Graduate Teaching Assistant | University of Guelph, Canada  
+**September 2023 – April 2024**  
+- Graded assignments and exams with precision, offering detailed feedback to enhance student performance.  
 - Conducted office hours to address student inquiries and proctored exams to maintain academic integrity.
 
----
-
-**Software Developer | IQVIA, Bangladesh**  
-*September 2022 -- August 2023*  
-- Worked on .NET Core microservice applications using a vertically-sliced architecture, adhering to SOLID principles.
-- Implemented new features, resolved defects, and created BDD (Behavior-Driven Development) tests to ensure robust software functionality.
+### Software Developer | IQVIA, Bangladesh  
+**September 2022 – August 2023**  
+- Developed and implemented new features in .NET Core microservice applications while working closely with team members to ensure alignment with task requirements.  
+- Conducted code reviews, resolved defects efficiently, and implemented BDD (Behavior-Driven Development) tests to enhance code quality and ensure reliable system performance.  
+- Actively participated in daily Scrum meetings, sprint planning, and retrospectives, collaborating with team members to align on tasks, address challenges, and improve development processes.
 
 
 # Education
@@ -42,5 +44,4 @@ As an aspiring data scientist, I am passionate about leveraging data to solve co
 ---
 
 **Bachelor of Science in Computer Science & Engineering (CSE) | Bangladesh University of Engineering & Technology (BUET), Bangladesh**  
-*February 2017 -- May 2022*  
-- **CGPA:** 3.66 on a scale of 4.00  
+*February 2017 -- May 2022*   
