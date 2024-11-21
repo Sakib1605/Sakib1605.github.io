@@ -3,8 +3,6 @@ title: "Certifications"
 collection: teaching
 ---
 
-
-
 - [**Microsoft Certified: Power BI Data Analyst Associate (PL-300)**](https://learn.microsoft.com/en-us/users/mohammadsakibulislam-1418/credentials/ed0b38a895e17370)  
   Issued: November 18, 2024  
  
