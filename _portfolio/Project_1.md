@@ -16,7 +16,7 @@ excerpt: 'Designed an interactive Excel dashboard to analyze sales trends, custo
 
 The objective of the **Sales Performance Analysis Dashboard** was to create a comprehensive, interactive, and automated solution for analyzing sales performance across multiple dimensions. This dashboard enables businesses to gain actionable insights by dynamically filtering data, visualizing key metrics, and generating automated reports based on user-defined filters. 
 
-Key goals included:
+Key goals:
 - Integrating multiple datasets (**Customers**, **Orders**, and **Sales**) into a unified dataset for seamless analysis.
 - Designing an intuitive, interactive dashboard that provides insights into sales trends, customer segments, product performance, and shipping modes.
 - Implementing automation with VBA to automate data update and the generation of custom sales performance reports.

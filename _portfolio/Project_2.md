@@ -12,7 +12,6 @@ excerpt: 'Conducted comprehensive supply chain performance analysis using SQL to
 
 
 
-# Supply Chain Analysis Using SQL
 
 
 ## Objective
