@@ -1,99 +1,174 @@
 ---
-title: "Analysis of Big Data Project: Exploratory Data Analysis using PySpark"
+title: "Analysis of Spatial Temporal Project: Healthcare Accessibility Analysis"
 collection: Projects
 permalink: /portfolio/Project_3
-excerpt: 'Utilized PySpark for comprehensive Exploratory Data Analysis (EDA) on US Census data spanning from 2015 to 2017. Employed advanced visualization techniques to explore demographic attributes, including ethnic composition and gender distribution. Investigated socioeconomic factors such as poverty rates, employment patterns, income disparities, and commute patterns across different states to analyze temporal trends for comprehensive insights.'
-#slidesurl: 'http://academicpages.github.io/files/slides1.pdf'
-#paperurl: 'http://academicpages.github.io/files/paper1.pdf'
+excerpt: 'Analyzed healthcare accessibility in Toronto to identify optimal locations for new facilities and improve emergency response. Applied spatial analysis techniques, including spatial clustering and kernel density estimation (KDE), to locate areas with high demand and underserved populations. Utilized Inverse Distance Weighting (IDW) for estimating
+healthcare demand and identifying suitable new facility locations. Employed road network analysis with Dijkstra’s
+algorithm to determine the shortest routes to existing facilities, enhancing emergency response strategies.'
+slidesurl: 'https://github.com/Sakib1605/Healthcare_Accessibility_Analysis/blob/main/Final%20Report.pdf'
+#reporturl: 'https://github.com/Sakib1605/Healthcare_Accessibility_Analysisis/blob/main/Final%20Report.pdf'
 #citation: 'Your Name, You. (2009). &quot;Paper Title Number 1.&quot; <i>Journal 1</i>. 1(1).'
 ---
 
-[Github_Repository_Link](https://github.com/Sakib1605/Exploratory_Data_Analysis_using_PySpark)
+[Github_Repository_Link](https://github.com/Sakib1605/Healthcare_Accessibility_Analysis)
+
+## Executive Summary
+
+Healthcare accessibility is vital in a city like Toronto, where disparities in access to services can significantly affect health outcomes, particularly for vulnerable groups such as the elderly and low-income residents. This project aims to propose new locations for healthcare facilities and identify the shortest routes to existing facilities. Advanced spatial interpolation methods like Kriging and Inverse Distance Weighting (IDW) were used to identify underserved areas, with a focus on the northern and eastern parts of the city. This analysis offers insights that can aid city planners in improving healthcare accessibility and equity.
+
+---
+
+## Objectives
+- **Identify Vulnerable Populations**: Analyze demographic data to locate areas with high concentrations of elderly and low-income residents.
+- **Determine Optimal Locations for New Healthcare Facilities**: Use geospatial analysis to find underserved areas in Toronto.
+- **Optimize Emergency Response Times**: Analyze road network data to determine the shortest routes to healthcare facilities.
+
+---
 
 ## 1. Introduction
 
-This report documents the steps taken for an exploratory data analysis (EDA) on the "US Census Demographic Data" using PySpark. The dataset provides insights into the demographic and socio-economic characteristics of different population groups, including variables such as gender, race/ethnicity, income, employment status, and poverty rates.
+### 1.1 Background
+Toronto, with a population of over 2.9 million, is home to diverse populations. Access to healthcare services varies, with certain neighborhoods facing significant challenges, especially among the elderly, immigrants, and low-income families. This project aims to address these disparities using data-driven approaches to propose new healthcare facilities where they are most needed.
 
-The primary objective of the analysis is to explore socio-economic disparities across different demographic groups, identify trends in employment and income, and understand how various factors are interrelated. PySpark was chosen due to its ability to efficiently process large datasets distributed across multiple nodes, making it ideal for handling census-scale data.
+### 1.2 Literature Review
+Studies show that low-income and elderly populations face substantial barriers in accessing healthcare. Advanced geospatial tools, such as those applied in this project, are essential in identifying and addressing these inequalities.
 
----
-## 2. Dataset Description
-
-The dataset used in this analysis is sourced from the U.S. Census Bureau and contains detailed demographic and socio-economic information on various population groups across the United States. The dataset includes the following key variables:
-
-- **Age:** Numerical variable representing the age of individuals.
-- **Gender:** Categorical variable representing the gender of individuals (Male, Female).
-- **Race/Ethnicity:** Categorical variable representing the race or ethnicity of individuals.
-- **Income:** Numerical variable representing the annual income of individuals.
-- **Employment Status:** Categorical variable indicating whether an individual is employed, unemployed, or not in the labor force.
-- **Poverty Status:** Categorical variable indicating whether an individual is below the poverty line.
-
-The dataset is extensive and covers a large population sample, making it well-suited for identifying trends and performing detailed analysis on socio-economic conditions across the country. Due to the large size of the data, PySpark was used for efficient distributed processing. The data was loaded into a PySpark DataFrame, leveraging PySpark’s distributed computing capability. Given the large size of census data, PySpark allows for optimized data loading and transformation, reducing processing time. Efficient data loading is critical in ensuring that subsequent analysis is performed smoothly on large-scale datasets.
+### 1.3 Motivation
+While prior research has identified underserved neighborhoods, the use of advanced mapping techniques like Kernel Density Estimation (KDE) and Multi-Criteria Decision Analysis (MCDA) provides a more detailed understanding of healthcare access in Toronto.
 
 ---
 
-## 3. Data Cleaning
+## 2. Data Sources
 
-Data cleaning was a crucial step in ensuring the reliability and accuracy of the analysis. The following tasks were performed during the cleaning phase:
+### 2.1 Healthcare Locations Data
+Sourced from the Ministry of Health Service Provider Locations database (2024), this dataset includes geographic information on various healthcare facilities in Toronto.
 
-- **Handling Missing Values:** Missing data in key variables such as income and employment status were identified. Missing values were either imputed based on logical assumptions or removed from the dataset when they could distort the analysis.
-- **Data Type Adjustments:** To ensure proper analysis, categorical and numerical data types were corrected. For instance, income and age were formatted as numeric types, while gender and employment status were treated as categorical variables.
+### 2.2 Census Data
+Demographic data was obtained from the City of Toronto’s Ward Profiles (2021), focusing on population distribution and income levels to identify vulnerable populations.
 
-By cleaning the data, we ensured that the dataset was accurate and ready for meaningful exploration without the risk of misinterpreting results due to data quality issues.
+#### 2.2.1 Population Distribution
+The population data shows higher densities in central Toronto, with lower densities in suburban areas.
+
+#### 2.2.2 Income Distribution
+Income disparities are evident across Toronto, with lower-income areas concentrated in the northern and central parts of the city.
+
+### 2.3 Road Networks Data
+Road network and traffic volume data were sourced from the City of Toronto’s open data portal. This dataset was essential for analyzing emergency response times.
+
+---
+
+## 3. Data Preprocessing
+
+### 3.1 Healthcare Data Preprocessing
+Non-essential healthcare services were excluded, and the dataset was transformed to the WGS 84 CRS for compatibility with other data sources.
+
+### 3.2 Population and Income Data Preprocessing
+Population and income data were aggregated and normalized. Missing values were handled to ensure clean and usable data.
+
+### 3.3 Road Networks Data Preprocessing
+The road network dataset was filtered to include only major roads, and distances between healthcare facilities and intersections were calculated.
 
 ---
 
 ## 4. Exploratory Data Analysis (EDA)
 
-### 4.1 Summary Statistics
-The analysis began by generating summary statistics to understand the distribution of key variables such as income, age, and employment status. Summary statistics helped identify the central tendencies (mean, median) and variabilities (standard deviation) within the data. Summary statistics provide a foundational understanding of the data, highlighting any extreme values (outliers) and ensuring that the distributions of variables are understood before proceeding with more detailed analysis.
+### 4.1 Income Analysis (KDE)
+The KDE analysis identified regions with high concentrations of low-income households, particularly in the central and western parts of the city.
+
+### 4.2 Elder Population Analysis (KDE)
+KDE was used to visualize the density of elderly populations, highlighting central and southern areas with higher concentrations of elderly residents.
 
 ---
 
-### 4.2 Income Distribution Analysis
-Income distribution was one of the primary focuses of the analysis. The goal was to examine the spread of income across the population, identifying which income brackets had the most individuals. The analysis revealed that a significant portion of the population was concentrated in lower income ranges, suggesting income inequality. Understanding income distribution is essential for analyzing economic disparities. Identifying income brackets with a high concentration of individuals can inform policies aimed at addressing poverty and promoting economic equity.
+## 5. Methodology
 
-**Findings:** The analysis showed a skewed income distribution, with a heavy concentration of individuals in lower income ranges, indicating potential economic inequality across the population.
+### 5.1 Define Catchment Area and Calculate Supply-to-Demand Ratio
+A 5-kilometer catchment area was created around each healthcare facility, and the supply-to-demand ratio was calculated based on the number of facilities and population within each catchment.
 
----
+### 5.2 Calculate Accessibility Score
+An accessibility score was calculated for each Census Tract, representing the ease of access to healthcare facilities across Toronto.
 
-### 4.3 Gender and Employment Status Analysis
-A comparative analysis of employment status across gender groups was conducted. The goal was to examine whether significant disparities existed in employment rates between males and females. Gender-based analysis helps in identifying socio-economic gaps that may exist in the workforce. By analyzing employment status across genders, we aimed to uncover potential imbalances in job opportunities and participation rates.
+### 5.3 Identify Underserved Areas
+Underserved areas were identified using accessibility scores below 0.2. New potential locations for healthcare facilities were generated.
 
-**Findings:** The results indicated that females had lower employment rates compared to males, highlighting gender disparities in labor force participation. This finding suggests potential barriers for women in the workforce, which could be further explored in future analyses.
+### 5.4 Centroid as Potential Locations in Each Census Tract
+Centroids of Census Tracts within 5 kilometers of the Toronto border were considered as potential locations for new healthcare facilities.
 
----
+### 5.5 Calculate Distance to Nearest Existing Hospital
+Dijkstra’s Algorithm was applied to calculate the shortest travel distance from potential new facility locations to existing hospitals.
 
-### 4.4 Regional Employment Variations
-Employment rates were also analyzed by geographic region to understand whether employment opportunities were evenly distributed across different parts of the country. Regional analysis provides insights into geographic inequalities in employment. Identifying regions with higher unemployment rates can help policymakers target those areas for job creation and economic development initiatives.
+### 5.6 Calculate Necessity Score Using MCDA
+The MCDA approach was used to rank potential new locations based on factors such as distance to the nearest hospital, elderly population, income level, and accessibility score.
 
-**Findings:** The analysis revealed regional disparities, with certain areas experiencing higher unemployment rates. These variations suggest that labor market conditions are not uniform across the country and that some regions face more economic challenges than others.
+### 5.7 Apply Universal Kriging
+Kriging was used to predict necessity scores for random points in underserved areas, providing a geostatistical approach to identifying key gaps in healthcare access.
 
----
-
-### 4.5 Age and Income Correlation
-The relationship between age and income was examined to understand how income levels change across different age groups. This analysis aimed to determine whether older individuals, who typically have more work experience, tend to have higher incomes compared to younger individuals. Analyzing the relationship between age and income helps reveal trends in earning potential over a lifetime. It can indicate whether individuals are reaching their peak earning years later in life or whether younger generations face economic challenges in securing high-paying jobs.
-
-**Findings:** The analysis showed that income generally increased with age, particularly in mid-life (ages 35-50), which is consistent with the idea that earning potential rises with experience. However, income started to decline in older age groups (over 60), likely due to retirement and reduced labor market participation.
-
----
-
-### 4.6 Poverty Rate by Demographic Groups
-The final analysis focused on the poverty rate across various demographic groups, including race/ethnicity and gender. This analysis aimed to identify which groups were most vulnerable to poverty. Analyzing poverty rates by demographic group helps uncover socio-economic inequalities that affect specific communities. Identifying vulnerable groups can inform social welfare policies aimed at reducing poverty and improving living standards.
-
-**Findings:** The analysis revealed that certain minority groups had disproportionately higher poverty rates compared to others, indicating significant economic inequality. Women also had higher poverty rates compared to men, further emphasizing gender disparities in economic well-being.
+### 5.8 Apply IDW
+IDW was used as an alternative method, focusing on proximity to existing facilities to estimate accessibility scores.
 
 ---
 
-## 5. Conclusion
+## 6. Key Findings
 
-The exploratory data analysis using PySpark provided critical insights into socio-economic disparities within the U.S. population. By examining income distribution, employment rates, and poverty levels across different demographic groups, we uncovered significant patterns, including:
+### 6.1 Kriging Analysis
+Kriging identified critical underserved areas in the northern and eastern parts of Toronto, particularly benefitting low-income and elderly populations.
 
-- **Income Inequality:** A large portion of the population was concentrated in lower income brackets, suggesting economic inequality.
-- **Gender Disparities:** Women faced lower employment rates and higher poverty rates compared to men, indicating gender-based economic challenges.
-- **Regional Employment Differences:** Certain regions experienced higher unemployment rates, suggesting geographic labor market disparities.
-- **Age and Income Trends:** Income generally increased with age until mid-life, after which it declined due to retirement.
+### 6.2 IDW Analysis
+IDW provided similar results but with a stronger focus on areas closer to existing healthcare facilities.
 
-These insights are valuable for guiding future research and informing policy interventions aimed at addressing economic inequality, improving employment opportunities, and supporting vulnerable demographic groups.
+### 6.3 Comparison and Difference Analysis
+A comparison between Kriging and IDW showed that Kriging better addressed the needs of more isolated populations, while IDW emphasized proximity to current facilities.
 
+### 6.4 Shortest Route Point Analysis
+Shortest route analysis confirmed that the new proposed healthcare locations were both strategically placed and accessible.
 
+---
+
+## 7. Limitations
+
+### 7.1 Edge Location Considerations
+The analysis did not account for healthcare facilities outside Toronto’s borders, potentially misrepresenting accessibility for border regions.
+
+### 7.2 Generalizability
+While the methods are broadly applicable, the findings are specific to Toronto’s urban landscape and may not be directly transferable to other cities.
+
+### 7.3 Data Limitations
+The accuracy of the results depends on the quality of census, healthcare, and road network data, and the assumption that all healthcare facilities provide equivalent services.
+
+---
+
+## 8. Future Scope
+
+### 8.1 Real-Time Traffic Data Integration
+Incorporating real-time traffic data could improve the accuracy of shortest route calculations.
+
+### 8.2 Commercial Space Availability
+Future research could analyze the availability of commercial properties for building new healthcare facilities.
+
+### 8.3 Disability Population-Specific Analysis
+Future studies could focus on healthcare accessibility for people with disabilities.
+
+### 8.4 Incorporating Facility Capacity (Available Beds)
+Considering the capacity of existing healthcare facilities could provide a more nuanced analysis of healthcare accessibility.
+
+---
+
+## 9. Conclusion
+
+This project identified optimal locations for new healthcare facilities in Toronto, focusing on improving access for vulnerable populations. The Kriging and IDW methods, combined with shortest route analysis, provide actionable insights for improving healthcare accessibility in underserved areas.
+
+---
+
+## References
+
+### Data sources
+1. Ministry of Health Ontario (2024) Ministry of Health Service Provider Locations. GeoHub Ontario, 2024. [Link](https://geohub.lio.gov.on.ca/datasets/ministry-of-health-service-providerlocations/explore)
+2. City of Toronto. Traffic Volumes at Intersections for All Modes. [Link](https://open.toronto.ca/dataset/traffic-volumes-at-intersections-for-all-modes)
+3. City of Toronto. (2024). Ward Profiles 25 Ward Model. [Link](https://open.toronto.ca/dataset/ward-profiles-25-ward-model)
+
+### Additional References
+1. Shah, T. I., Bell, S., & Wilson, K. (2016). Spatial accessibility to healthcare services in Canadian urban areas. *PLoS ONE*, 11(12), e0168208. [Link](https://doi.org/10.1371/journal.pone.0168208)
+2. Luo, W., & Wang, F. (2019). Understanding inequalities in healthcare access among vulnerable populations. *PLoS ONE*, 14(1), e0210113. [Link](https://doi.org/10.1371/journal.pone.0210113)
+3. Laverty, M., & Dixon, J. (2021). Geographical disparities in access to hospital care in Ontario. *BMJ Open*, 11(1), e041474. [Link](https://doi.org/10.1136/bmjopen-2020-041474)
+4. Ahmad, J., Nazir, M., & Shafiq, M. U. (2022). Enhanced two-step floating catchment area method for measuring spatial accessibility. *Recent Developments in Spatial Analysis and Decision Making*. [Link](https://doi.org/10.1007/978-3-031-06443-2_14)
+5. Sun, M., Chao, G., Xue, C., & Li, C. (2021). A data-driven method for measuring accessibility to healthcare. *IEEE Access*, 9, 64972-64982. [Link](https://doi.org/10.1109/ACCESS.2021.3075494)

@@ -1,103 +1,99 @@
 ---
-title: "Early Patient Readmission Prediction"
+title: "Analysis of Big Data Project: Exploratory Data Analysis using PySpark"
 collection: Projects
 permalink: /portfolio/Project_5
-excerpt: 'Developed a machine learning pipeline to predict early patient readmissions using a decade of clinical records from 130 US hospitals. Extensive data preprocessing was performed, class imbalance was addressed using SMOTE, and multiple models including Logistic Regression and Random Forest were evaluated, achieving the highest accuracy of 62.2%. Visualization techniques such as ROC curves and confusion matrices were used to assess model performance.'
-slidesurl: 'https://github.com/Sakib1605/Early_Patient_Readmission_Prediction/blob/main/mohammad_data_6300_project.pdf'
+excerpt: 'Utilized PySpark for comprehensive Exploratory Data Analysis (EDA) on US Census data spanning from 2015 to 2017. Employed advanced visualization techniques to explore demographic attributes, including ethnic composition and gender distribution. Investigated socioeconomic factors such as poverty rates, employment patterns, income disparities, and commute patterns across different states to analyze temporal trends for comprehensive insights.'
+#slidesurl: 'http://academicpages.github.io/files/slides1.pdf'
 #paperurl: 'http://academicpages.github.io/files/paper1.pdf'
 #citation: 'Your Name, You. (2009). &quot;Paper Title Number 1.&quot; <i>Journal 1</i>. 1(1).'
 ---
 
-[Github_Repository_Link](https://github.com/Sakib1605/Early_Patient_Readmission_Prediction)
+[Github_Repository_Link](https://github.com/Sakib1605/Exploratory_Data_Analysis_using_PySpark)
 
-## Introduction
+## 1. Introduction
 
-Hospital readmissions, especially early readmissions within 30 days of discharge, are a significant concern in healthcare management. Readmissions not only indicate potential shortcomings in post-discharge care but also contribute to increased healthcare costs. Predicting early readmissions can help hospitals improve patient care, allocate resources more effectively, and reduce operational costs. In this project, the objective is to leverage machine learning models to predict whether a patient will be readmitted within 30 days of discharge, based on historical clinical data.
+This report documents the steps taken for an exploratory data analysis (EDA) on the "US Census Demographic Data" using PySpark. The dataset provides insights into the demographic and socio-economic characteristics of different population groups, including variables such as gender, race/ethnicity, income, employment status, and poverty rates.
 
-The dataset used in this project comprises a decade's worth of clinical records from 130 US hospitals, containing patient demographic details, admission history, diagnostic codes, and medication information. A total of 101,766 records representing 71,518 unique patients are analyzed. The project focuses on transforming the raw dataset into a format suitable for predictive modeling through various data preprocessing techniques, including handling missing data, removing duplicates, and categorizing diagnostic codes.
+The primary objective of the analysis is to explore socio-economic disparities across different demographic groups, identify trends in employment and income, and understand how various factors are interrelated. PySpark was chosen due to its ability to efficiently process large datasets distributed across multiple nodes, making it ideal for handling census-scale data.
 
-Several machine learning models are implemented to predict patient readmission, including Logistic Regression, Random Forest, Support Vector Machines (SVM), and Gradient Boosting, among others. By applying Synthetic Minority Over-sampling Technique (SMOTE) to address class imbalance, the models are trained and evaluated based on their accuracy and F1-score. Visualization techniques, such as ROC curves and confusion matrices, are used to evaluate the performance of each model.
+---
+## 2. Dataset Description
 
-The ultimate goal of this project is to determine the most effective machine learning model for predicting early patient readmissions, which can be applied in hospital systems to optimize patient outcomes and resource allocation.
+The dataset used in this analysis is sourced from the U.S. Census Bureau and contains detailed demographic and socio-economic information on various population groups across the United States. The dataset includes the following key variables:
 
+- **Age:** Numerical variable representing the age of individuals.
+- **Gender:** Categorical variable representing the gender of individuals (Male, Female).
+- **Race/Ethnicity:** Categorical variable representing the race or ethnicity of individuals.
+- **Income:** Numerical variable representing the annual income of individuals.
+- **Employment Status:** Categorical variable indicating whether an individual is employed, unemployed, or not in the labor force.
+- **Poverty Status:** Categorical variable indicating whether an individual is below the poverty line.
 
-## Data Preprocessing
+The dataset is extensive and covers a large population sample, making it well-suited for identifying trends and performing detailed analysis on socio-economic conditions across the country. Due to the large size of the data, PySpark was used for efficient distributed processing. The data was loaded into a PySpark DataFrame, leveraging PySpark’s distributed computing capability. Given the large size of census data, PySpark allows for optimized data loading and transformation, reducing processing time. Efficient data loading is critical in ensuring that subsequent analysis is performed smoothly on large-scale datasets.
 
-### 1. Removing Duplicate Records
-- The dataset contains duplicate entries based on patient numbers (`patient_nbr`). To maintain data integrity, these duplicates are removed, ensuring each patient is represented only once.
+---
 
-### 2. Handling Missing Data
-- Columns with a high proportion of missing values, such as `weight`, `payer_code`, and `medical_specialty`, are dropped.
-- Missing values in the `race` column are imputed using the most frequent race category.
+## 3. Data Cleaning
 
-### 3. Removing Uninformative Features
-- Irrelevant features, including `encounter_id`, `patient_nbr`, and highly imbalanced columns (where over 98% of the values are the same), are removed to optimize classification.
+Data cleaning was a crucial step in ensuring the reliability and accuracy of the analysis. The following tasks were performed during the cleaning phase:
 
-### 4. Categorizing Diagnostic Features
-- The diagnostic columns (`diag_1`, `diag_2`, `diag_3`) are categorized using ICD-9 codes, improving interpretability.
+- **Handling Missing Values:** Missing data in key variables such as income and employment status were identified. Missing values were either imputed based on logical assumptions or removed from the dataset when they could distort the analysis.
+- **Data Type Adjustments:** To ensure proper analysis, categorical and numerical data types were corrected. For instance, income and age were formatted as numeric types, while gender and employment status were treated as categorical variables.
 
-### 5. Mapping Admission, Source, and Discharge Categories
-- Admission types, admission sources, and discharge types are replaced with descriptive categories, consolidating similar meanings into one category (e.g., mapping ‘Urgent’ to ‘Emergency’).
+By cleaning the data, we ensured that the dataset was accurate and ready for meaningful exploration without the risk of misinterpreting results due to data quality issues.
 
-### 6. Handling Age Feature
-- Age ranges are converted into numerical values, with each range assigned a numeric value to correlate with the likelihood of readmission.
+---
 
-### 7. Removing Outliers
-- Outliers in numeric columns are removed based on boxplot analysis to ensure consistency.
+## 4. Exploratory Data Analysis (EDA)
 
-### 8. Handling Drug Medication Features
-- Drug-related features with imbalanced distributions are dropped.
+### 4.1 Summary Statistics
+The analysis began by generating summary statistics to understand the distribution of key variables such as income, age, and employment status. Summary statistics helped identify the central tendencies (mean, median) and variabilities (standard deviation) within the data. Summary statistics provide a foundational understanding of the data, highlighting any extreme values (outliers) and ensuring that the distributions of variables are understood before proceeding with more detailed analysis.
 
-### 9. Transforming Glucose Serum Levels
-- The `max_glu_serum` feature is mapped to numeric values: `None` (0), `Norm` (1), `>200` (2), and `>300` (2).
+---
 
-### 10. Handling Diabetes Medication
-- The `diabetesMed` column is converted to numeric values: `No` (0) and `Yes` (1), due to its observed correlation with readmission rates.
+### 4.2 Income Distribution Analysis
+Income distribution was one of the primary focuses of the analysis. The goal was to examine the spread of income across the population, identifying which income brackets had the most individuals. The analysis revealed that a significant portion of the population was concentrated in lower income ranges, suggesting income inequality. Understanding income distribution is essential for analyzing economic disparities. Identifying income brackets with a high concentration of individuals can inform policies aimed at addressing poverty and promoting economic equity.
 
-### 11. Change of Medications
-- The `change` column is transformed into numeric: `No` (0) and `Yes` (1), reflecting the impact of medication changes on readmission rates.
+**Findings:** The analysis showed a skewed income distribution, with a heavy concentration of individuals in lower income ranges, indicating potential economic inequality across the population.
 
-### 12. Target Variable Transformation
-- The target variable (`readmitted`) is mapped to numeric values: `NO` (0), `>30` (1), and `<30` (2).
+---
 
-### 13. Categorical Feature Encoding
-- One-hot encoding is applied to transform categorical features into numeric format.
+### 4.3 Gender and Employment Status Analysis
+A comparative analysis of employment status across gender groups was conducted. The goal was to examine whether significant disparities existed in employment rates between males and females. Gender-based analysis helps in identifying socio-economic gaps that may exist in the workforce. By analyzing employment status across genders, we aimed to uncover potential imbalances in job opportunities and participation rates.
 
-### 14. Addressing Class Imbalance
-- SMOTE (Synthetic Minority Over-Sampling Technique) is applied to balance the class distribution, improving the generalization and prediction capabilities of the model.
+**Findings:** The results indicated that females had lower employment rates compared to males, highlighting gender disparities in labor force participation. This finding suggests potential barriers for women in the workforce, which could be further explored in future analyses.
 
-### 15. Data Split
-- The dataset is split into training and testing sets, with 10% allocated for testing purposes.
+---
 
-## Model Accuracy Analysis
+### 4.4 Regional Employment Variations
+Employment rates were also analyzed by geographic region to understand whether employment opportunities were evenly distributed across different parts of the country. Regional analysis provides insights into geographic inequalities in employment. Identifying regions with higher unemployment rates can help policymakers target those areas for job creation and economic development initiatives.
 
-Multiple machine learning models were evaluated using training and testing accuracy, and F1 scores (micro). The results are summarized below:
+**Findings:** The analysis revealed regional disparities, with certain areas experiencing higher unemployment rates. These variations suggest that labor market conditions are not uniform across the country and that some regions face more economic challenges than others.
 
-| Model                  | Training Accuracy | Testing Accuracy | F1-Score (Micro) |
-|------------------------|-------------------|------------------|------------------|
-| Logistic Regression     | 0.634             | 0.622            | 0.622            |
-| Decision Tree           | 0.638             | 0.572            | 0.572            |
-| K Nearest Neighbor      | 0.719             | 0.546            | 0.546            |
-| Naive Bayes             | 0.576             | 0.531            | 0.531            |
-| Support Vector Machine  | 0.675             | 0.617            | 0.617            |
-| Random Forest           | 0.785             | 0.612            | 0.612            |
-| Gradient Boosting       | 0.736             | 0.609            | 0.608            |
-| Bagging Classifier      | 0.689             | 0.604            | 0.604            |
-| Adaboost Classifier     | 0.775             | 0.589            | 0.589            |
+---
 
-## Visualization & Evaluation
+### 4.5 Age and Income Correlation
+The relationship between age and income was examined to understand how income levels change across different age groups. This analysis aimed to determine whether older individuals, who typically have more work experience, tend to have higher incomes compared to younger individuals. Analyzing the relationship between age and income helps reveal trends in earning potential over a lifetime. It can indicate whether individuals are reaching their peak earning years later in life or whether younger generations face economic challenges in securing high-paying jobs.
 
-### 1. ROC Curves and AUC
-ROC curves and AUC (Area Under Curve) values were used to assess the ability of each model to correctly classify instances across different classes.
+**Findings:** The analysis showed that income generally increased with age, particularly in mid-life (ages 35-50), which is consistent with the idea that earning potential rises with experience. However, income started to decline in older age groups (over 60), likely due to retirement and reduced labor market participation.
 
-### 2. Confusion Matrix
-A heatmap of the confusion matrix was used to visualize the model’s effectiveness by showing counts of correctly and incorrectly predicted instances.
+---
 
-### 3. Bar Plots
-Two bar plots were generated:
-- One demonstrating the testing accuracy for each model.
-- One illustrating F1 scores for each model.
+### 4.6 Poverty Rate by Demographic Groups
+The final analysis focused on the poverty rate across various demographic groups, including race/ethnicity and gender. This analysis aimed to identify which groups were most vulnerable to poverty. Analyzing poverty rates by demographic group helps uncover socio-economic inequalities that affect specific communities. Identifying vulnerable groups can inform social welfare policies aimed at reducing poverty and improving living standards.
 
-## Conclusion
-From the testing accuracy and F1-score comparisons, it was observed that Logistic Regression, Support Vector Machine (SVM), Random Forest, Gradient Boosting, and Bagging Classifier outperformed Decision Tree, KNN, Naive Bayes, and Adaboost Classifier. The best accuracy achieved was 0.622, with Logistic Regression performing the best overall.
+**Findings:** The analysis revealed that certain minority groups had disproportionately higher poverty rates compared to others, indicating significant economic inequality. Women also had higher poverty rates compared to men, further emphasizing gender disparities in economic well-being.
+
+---
+
+## 5. Conclusion
+
+The exploratory data analysis using PySpark provided critical insights into socio-economic disparities within the U.S. population. By examining income distribution, employment rates, and poverty levels across different demographic groups, we uncovered significant patterns, including:
+
+- **Income Inequality:** A large portion of the population was concentrated in lower income brackets, suggesting economic inequality.
+- **Gender Disparities:** Women faced lower employment rates and higher poverty rates compared to men, indicating gender-based economic challenges.
+- **Regional Employment Differences:** Certain regions experienced higher unemployment rates, suggesting geographic labor market disparities.
+- **Age and Income Trends:** Income generally increased with age until mid-life, after which it declined due to retirement.
+
+These insights are valuable for guiding future research and informing policy interventions aimed at addressing economic inequality, improving employment opportunities, and supporting vulnerable demographic groups.
+
 

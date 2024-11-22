@@ -1,103 +1,440 @@
 ---
-title: "Machine Learning Project: Movie Recommendation & Insights Analysis"
+title: "Supply Chain Analysis Using SQL"
 collection: Projects
 permalink: /portfolio/Project_2
-excerpt: 'Utilized natural language processing (NLP) and machine learning techniques to extract valuable insights from a movie dataset. Developed a content-based movie recommendation system that suggests films based on similarities in movie descriptions, leveraging NLP to analyze and compare textual data. Implemented multilabel genre classification by analyzing movie overviews, enabling the categorization of films into multiple genres simultaneously. Additionally, predicted movie ratings using various features such as genre, budget, and revenue, applying machine learning methods and feature importance analysis.'
-slidesurl: 'https://github.com/Sakib1605/Movie_Recommendation_and_Insights_Analysis/blob/main/DATA_6300_FINAL_PROJECT_REPORT_Mohammad.pdf'
-#paperurl: 'http://academicpages.github.io/files/paper1.pdf'
+excerpt: 'Conducted comprehensive supply chain performance analysis using SQL to evaluate supplier reliability, inventory management, shipping efficiency, and product profitability. Designed and executed complex queries to identify key metrics such as supplier on-time performance, stockout frequency, defect rates, and high-demand regions.'
+
+#reporturl: 'https://github.com/Sakib1605/Healthcare_Accessibility_Analysisis/blob/main/Final%20Report.pdf'
 #citation: 'Your Name, You. (2009). &quot;Paper Title Number 1.&quot; <i>Journal 1</i>. 1(1).'
 ---
 
-[Github_Repository_Link](https://github.com/Sakib1605/Movie_Recommendation_and_Insights_Analysis)
-## Introduction
+[Github_Repository_Link](https://github.com/Sakib1605/Supply_Chain_Analysis_Using_Sql)
 
-With the plethora of movies available on the internet these days, viewers often face difficulty in finding movies that align with their interests. Relying entirely on genre-based searches may overlook individual preferences, highlighting the importance of content-based movie suggestions. By leveraging movie descriptions and plot summaries, content-based movie recommendation systems can facilitate the exploration of similar movies that match viewer preferences.
 
-Moreover, genre classification based on movie plot descriptions facilitates efficient genre categorization by identifying frequently used words in movie descriptions or themes associated with genres. Accurate genre classification helps audiences find movies that align with their preferred genres.
 
-Understanding audience preferences and gaining insights into factors influencing movie success is crucial in the film industry. This emphasizes the need for exploratory analysis and movie ratings prediction, which offers insights into key features contributing to a movie’s success and helps understand audience preferences.
+# Supply Chain Analysis Using SQL
 
-The motivation behind this project lies in enhancing movie exploration and improving user satisfaction by suggesting more relevant movies, effectively categorizing movies into genres based on content, and uncovering key features associated with audience engagement.
 
-## Problem Statement
+## Objective
+The purpose of this analysis is to identify trends, inefficiencies, and areas of improvement in the supply chain. By leveraging SQL queries, we examine key aspects such as supplier reliability, stock levels, manufacturing costs, shipping efficiency, and product performance. The ultimate goal is to provide actionable insights to enhance overall supply chain efficiency, reduce costs, and support strategic decision-making.
 
-The primary objective of the project is to employ natural language processing (NLP) and machine learning methods to derive meaningful insights from a movie dataset. The project comprises three tasks:
+---
 
-- **Content-based Movie Recommendation**: Develop a content-based recommendation system using NLP techniques to suggest movies based on similarities in movie descriptions. This involves analyzing movie descriptions and identifying semantic similarities.
-  
-- **Genre Classification Based on Movie Content**: Use NLP techniques to analyze textual content from movie overviews and develop classification models to categorize movies into multiple genres simultaneously. This is a multilabel classification problem.
-  
-- **Movie Ratings Prediction**: Predict movie ratings by analyzing features such as genre, budget, revenue, runtime, language, and production companies. Conduct feature importance analysis to identify key factors impacting movie ratings.
+## Approach
+The dataset, `supply_chain_data`, was analyzed using SQL queries to address specific business questions. Each query was designed to extract insights about different segments of the supply chain, including suppliers, products, transportation, and customer behaviors. Key metrics such as lead times, defect rates, and profit margins were calculated to provide a comprehensive view of supply chain performance.
 
-## Method
+---
 
-### 3.1 Dataset Information and Preprocessing
+## Business Questions and Analysis
 
-- **Dataset**: Data on 50 movies with 26 feature columns was initially extracted via web scraping from IMDb. This data was merged with a publicly available movie dataset from Kaggle, resulting in a final dataframe of 432,410 movies with 20 feature columns.
+## **1. Stockout Analysis: Which products frequently run out of stock?**
 
-- **Preprocessing Steps**:
-  1. **Handling Duplicate Movie Names**: Removed duplicate entries to ensure unique representation of each movie.
-  2. **Handling Missing Values**: Removed columns with high percentages of missing values and imputed missing values for some categorical columns.
-  3. **Data Type Conversion**: Converted columns to appropriate data types for consistency in analysis.
-  4. **Handling Outliers**: Removed movies with unusual runtimes.
-  5. **Feature Extraction**: Extracted release year and month from the release date.
-  6. **One-hot Encoding for Genres**: Applied one-hot encoding to convert genre categories into binary features.
-  7. **Text Preprocessing**: Preprocessed movie overviews by removing punctuation, eliminating stop words, and converting text to lowercase.
-  8. **Removing Unnecessary Columns**: Removed irrelevant columns for movie ratings prediction.
-  9. **Scaling Numerical Features**: Scaled numerical features to prevent feature dominance.
+**Objective:** 
+Identify products with frequent stockouts to improve inventory management.
 
-### 3.2 Modelling
+**SQL Query:**
+```sql
+SELECT 
+    Product_type,
+    COUNT(*) AS StockoutOccurrences,
+    AVG(Lead_times) AS AvgRestockTime
+FROM 
+    supply_chain_data
+WHERE 
+    Stock_levels = 0 -- Stockout condition
+GROUP BY 
+    Product_type
+ORDER BY 
+    StockoutOccurrences DESC;
 
-- **Movie Recommendation System**:
-  - **Word2Vec Approach**: Utilized word embeddings to capture semantic relationships. Combined "title," "overview," and "genre" columns into a "content" column, trained the Word2Vec model, and calculated cosine similarity to recommend similar movies.
-  
-  - **TF-IDF Approach**: Used TF-IDF vectorization to convert text data into numerical vectors. Calculated cosine similarity to suggest top 10 similar movies.
+```
+Analysis: Counts the number of times each product type experiences a stockout and calculates the average restocking time.
 
-- **Movie Genre Classification**:
-  - Applied preprocessing techniques to movie content text data, converted text into numerical vectors using TF-IDF, and trained classification models such as Logistic Regression, Random Forest, Gradient Boosting, and Adaboost Classifier. Evaluated models using precision, recall, and f1-score.
+Insights: Focus on maintaining adequate inventory for frequently out-of-stock products to prevent disruptions and lost sales.
 
-- **Movie Ratings Prediction**:
-  - Trained various regression models including Linear Regression, Ridge Regression, Support Vector Regressor, Decision Tree Regressor, Random Forest, Extreme Gradient Boosting, and Bagging Regressor. Evaluated model performance using MSE and MAE, and conducted feature importance analysis.
+## **2. Product Demand: Which products show declining/increasing demand over time?**
 
-## Results and Discussion
+**Objective:** 
+Determine trends in product demand over time to support strategic inventory and production decisions.
 
-### 4.1 Results for Exploratory Data Analysis
+**SQL Query:**
+```sql
+WITH MonthlyDemand AS (
+    SELECT 
+        Product_type,
+        DATEPART(YEAR, Order_date) AS OrderYear,
+        DATEPART(MONTH, Order_date) AS OrderMonth,
+        SUM(Order_quantities) AS MonthlyOrders
+    FROM 
+        supply_chain_data
+    GROUP BY 
+        Product_type, DATEPART(YEAR, Order_date), DATEPART(MONTH, Order_date)
+),
+MonthlyDemandWithLag AS (
+    SELECT 
+        Product_type,
+        OrderYear,
+        OrderMonth,
+        MonthlyOrders,
+        LAG(MonthlyOrders) OVER (
+            PARTITION BY Product_type 
+            ORDER BY OrderYear, OrderMonth
+        ) AS PreviousMonthOrders
+    FROM 
+        MonthlyDemand
+)
+SELECT 
+    Product_type,
+    CONCAT(OrderYear, '-', OrderMonth) AS CurrentMonth,
+    MonthlyOrders AS CurrentMonthOrders,
+    PreviousMonthOrders,
+    ROUND((MonthlyOrders - PreviousMonthOrders) * 100.0 / NULLIF(PreviousMonthOrders, 0), 2) AS MoMChangePercentage,
+    CASE 
+        WHEN (MonthlyOrders - PreviousMonthOrders) > 0 THEN 'Increasing Demand'
+        WHEN (MonthlyOrders - PreviousMonthOrders) < 0 THEN 'Declining Demand'
+        ELSE 'No Change'
+    END AS DemandTrend
+FROM 
+    MonthlyDemandWithLag
+WHERE 
+    PreviousMonthOrders IS NOT NULL -- Exclude the first month since it has no previous month
+ORDER BY 
+    Product_type, OrderYear, OrderMonth;
 
-- **Genre Analysis**:
-  - Distribution of movie counts across genres shows Drama, Documentary, and Comedy as the most prevalent genres.
-  - Most common words in movie descriptions vary by genre, providing insights into content variations.
-  - Co-occurrences of genres reveal patterns such as Action movies frequently co-occurring with Drama and Adventure.
+```
+**Analysis:** This query tracks monthly demand changes and categorizes trends as increasing, declining, or stable, highlighting shifts in market demand.
 
-- **Rating Analysis**:
-  - Documentary and Animation genres receive higher average ratings from 2010 to 2023.
+**Insights:** Focus on products with increasing demand to scale efforts, address declining demand to mitigate losses, and ensure consistent availability of stable products.
 
-- **Revenue Analysis**:
-  - Average revenue for certain genres decreased from 2021 to 2022, with increases in genres like Action and Adventure.
 
-- **Runtime Analysis**:
-  - Movies with runtimes between 120-180 minutes have the highest average popularity.
+## **3. Profitability Analysis: Which products have the highest revenue but low profit margins?**
 
-- **Movie Language Analysis**:
-  - English is the most prevalent language in the dataset.
+**Objective:** 
+Identify high-revenue products with low profit margins to improve pricing strategies and cost management.
 
-- **Popularity Analysis**:
-  - Adventure is the most popular genre in 2023.
+**SQL Query:**
+```sql
+SELECT 
+    Product_type,
+    SUM(Revenue_generated) AS TotalRevenue,
+    SUM(Manufacturing_costs + Shipping_costs) AS TotalCosts,
+    SUM(Revenue_generated - (Manufacturing_costs + Shipping_costs)) AS TotalProfit,
+    ROUND(SUM(Revenue_generated - (Manufacturing_costs + Shipping_costs)) * 100.0 / NULLIF(SUM(Revenue_generated), 0), 2) AS ProfitMargin
+FROM 
+    supply_chain_data
+GROUP BY 
+    Product_type
+ORDER BY 
+    ProfitMargin ASC, TotalRevenue DESC;
+```
 
-### 4.2 Machine Learning Results
+Analysis: This query calculates total revenue, total costs, and profit margins for each product type, sorting by low profit margins to identify products with high revenue but suboptimal profitability.
 
-- **Movie Recommendation System Results**:
-  - Both Word2Vec and TF-IDF approaches effectively recommend movies similar to the selected movie based on content and genre.
+**Insights:** High-revenue, low-margin products indicate potential areas for cost optimization, pricing adjustments, or process improvement to enhance profitability.
 
-- **Genre Classification Results**:
-  - Logistic Regression performed well for certain genres, while Random Forest and Gradient Boosting also showed effective results for specific genres. Adaboost Classifier had moderate performance.
 
-- **Movie Ratings Prediction Results**:
-  - Ensemble methods like Random Forest, Gradient Boosting, and Bagging Regressor outperformed individual models. Feature importance analysis identified rating count, runtime, release year, and popularity as significant factors affecting movie ratings.
+## **4. High Demand Regions: Which locations consistently order high volumes of products?**
 
-## Conclusion
+**Objective:** 
+Identify regions with high demand for specific products to prioritize inventory distribution and marketing efforts.
 
-The project successfully employed NLP and machine learning techniques to address challenges in movie recommendations, genre classification, and ratings prediction. Key contributions include enhanced movie discovery, effective content categorization, and valuable audience insights. This project improves movie exploration, categorization, and understanding of factors influencing movie success.
+**SQL Query:**
+```sql
+SELECT 
+    Location,
+    Product_type,
+    SUM(Order_quantities) AS TotalUnitsOrdered,
+    ROUND(SUM(Order_quantities) * 100.0 / SUM(SUM(Order_quantities)) OVER (PARTITION BY Product_type), 2) AS DemandPercentage
+FROM 
+    supply_chain_data
+GROUP BY 
+    Location, Product_type
+ORDER BY 
+    DemandPercentage DESC, TotalUnitsOrdered DESC;
+```
 
-## References
+Analysis: This query calculates the total units ordered and the percentage share of demand for each product type by location, highlighting regions with the highest contribution to product demand.
 
-[1] Asaniczka. (2023). TMDB Movies Dataset. Retrieved from: [Kaggle TMDB Movies Dataset](https://www.kaggle.com/datasets/asaniczka/tmdb-movies-dataset-2023-930k-movies)
+**Insights:** Focus on high-demand regions to optimize inventory placement and tailor marketing strategies, ensuring better service and reduced logistics costs.
+
+## **5. Shipping Delays: Which products experience frequent shipping delays and at what cost?**
+
+**Objective:** 
+Identify products with frequent shipping delays and quantify their associated costs.
+
+**SQL Query:**
+```sql
+SELECT 
+    Product_type,
+    COUNT(*) AS TotalShipments,
+    SUM(CASE WHEN Shipping_times > 7 THEN 1 ELSE 0 END) AS DelayedShipments,
+    ROUND(SUM(CASE WHEN Shipping_times > 7 THEN Shipping_costs ELSE 0 END), 2) AS DelayCost,
+    ROUND(SUM(CASE WHEN Shipping_times > 7 THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS DelayRate
+FROM 
+    supply_chain_data
+GROUP BY 
+    Product_type
+ORDER BY 
+    DelayedShipments DESC, DelayRate DESC, DelayCost DESC;
+
+```
+Analysis: This query calculates the frequency and cost of shipping delays for each product, highlighting products with the most delays.
+
+Insights: Focus on products with high delay rates and costs to optimize shipping strategies and reduce delays.
+
+
+
+## **6. Supplier Concentration Risk: Which products depend heavily on a single supplier??**
+**Objective:** Evaluate products with high dependency on a single supplier to mitigate supply chain risks.
+**SQL Query:**
+```sql
+SELECT TOP 5
+    Product_type,
+    Supplier_name,
+    COUNT(*) AS TotalOrders,
+    ROUND(COUNT(*) * 100.0 / NULLIF(SUM(COUNT(*)) OVER (PARTITION BY Product_type), 0), 2) AS SupplierDependency
+FROM 
+    supply_chain_data
+GROUP BY 
+    Product_type, Supplier_name
+ORDER BY 
+    SupplierDependency DESC;
+
+
+```
+Analysis: Calculates the dependency of each product type on its primary supplier by analyzing order shares.
+
+Insights: Reduce risks by diversifying suppliers for products heavily reliant on a single vendor.
+
+
+
+## **7. Inventory Turnover Analysis: Which products have the highest turnover rates by location?**
+**Objective:** Identify products with high turnover rates to optimize stock management by location.
+**SQL Query:**
+```sql
+WITH TurnoverAnalysis AS (
+    SELECT 
+        Product_type,
+        Location,
+        SUM(Number_of_products_sold) AS TotalUnitsSold,
+        AVG(Stock_levels) AS AvgStock,
+        CASE 
+            WHEN AVG(Stock_levels) > 0 THEN 
+                ROUND(SUM(Number_of_products_sold) / NULLIF(AVG(Stock_levels), 0), 2)
+            ELSE 0 
+        END AS TurnoverRate
+    FROM 
+        supply_chain_data
+    GROUP BY 
+        Product_type, Location
+)
+SELECT 
+    Product_type,
+    Location,
+    TotalUnitsSold,
+    AvgStock,
+    TurnoverRate
+FROM 
+    TurnoverAnalysis
+ORDER BY 
+    TurnoverRate DESC, TotalUnitsSold DESC;
+```
+
+Analysis: Determines the turnover rates of products at different locations based on sales and stock levels.
+
+Insights: High-turnover products indicate strong demand, necessitating adequate restocking to prevent shortages.
+
+
+
+
+## **8. Cost-Efficiency by Supplier: Which suppliers have the lowest shipping and manufacturing costs per product?**
+**Objective:** Identify cost-efficient suppliers to optimize procurement strategies.
+**SQL Query:**
+```sql
+WITH SupplierCostEfficiency AS (
+    SELECT 
+        Supplier_name,
+        Product_type,
+        AVG(Shipping_costs) AS AvgShippingCost,
+        AVG(Manufacturing_costs) AS AvgManufacturingCost,
+        AVG(Shipping_costs + Manufacturing_costs) AS TotalAvgCost,
+        SUM(Revenue_generated) AS TotalRevenue,
+        ROUND(SUM(Revenue_generated - (Shipping_costs + Manufacturing_costs)), 2) AS TotalProfit,
+        ROUND((SUM(Revenue_generated - (Shipping_costs + Manufacturing_costs)) * 100.0) / NULLIF(SUM(Revenue_generated), 0), 2) AS ProfitMargin
+    FROM 
+        supply_chain_data
+    GROUP BY 
+        Supplier_name, Product_type
+),
+RankedSuppliers AS (
+    SELECT 
+        Supplier_name,
+        Product_type,
+        AvgShippingCost,
+        AvgManufacturingCost,
+        TotalAvgCost,
+        TotalRevenue,
+        TotalProfit,
+        ProfitMargin,
+        ROW_NUMBER() OVER (PARTITION BY Product_type ORDER BY ProfitMargin DESC) AS Rank
+    FROM 
+        SupplierCostEfficiency
+)
+SELECT 
+    Supplier_name,
+    Product_type,
+    AvgShippingCost,
+    AvgManufacturingCost,
+    TotalAvgCost,
+    TotalRevenue,
+    TotalProfit,
+    ProfitMargin
+FROM 
+    RankedSuppliers
+WHERE 
+    Rank = 1
+ORDER BY 
+    ProfitMargin DESC;
+
+```
+Analysis: Calculates average shipping and manufacturing costs for suppliers and ranks them by cost efficiency.
+
+Insights: Work with top-ranked suppliers to reduce costs and maximize profit margins.
+
+
+
+
+
+## **9. High-Risk Products: Which products have low profitability and high defect rates?**
+**Objective:** Identify products with high defect rates and low profitability for improvement.
+**SQL Query:**
+```sql
+WITH DefectProfitAnalysis AS (
+    SELECT 
+        Product_type,
+        SUM(CASE WHEN Inspection_results = 'Failed' THEN 1 ELSE 0 END) AS TotalDefects,
+        ROUND(SUM(CASE WHEN Inspection_results = 'Failed' THEN 1 ELSE 0 END) * 100.0 / NULLIF(COUNT(*), 0), 2) AS DefectRate,
+        SUM(Revenue_generated) AS TotalRevenue,
+        SUM(Manufacturing_costs + Shipping_costs) AS TotalCosts,
+        ROUND(SUM(Revenue_generated - (Manufacturing_costs + Shipping_costs)), 2) AS TotalProfit,
+        ROUND(SUM(Revenue_generated - (Manufacturing_costs + Shipping_costs)) * 100.0 / NULLIF(SUM(Revenue_generated), 0), 2) AS ProfitMargin
+    FROM 
+        supply_chain_data
+    GROUP BY 
+        Product_type
+)
+SELECT 
+    Product_type,
+    TotalDefects,
+    DefectRate,
+    TotalRevenue,
+    TotalCosts,
+    TotalProfit,
+    ProfitMargin
+FROM 
+    DefectProfitAnalysis
+ORDER BY 
+    DefectRate DESC, ProfitMargin ASC;
+```
+Analysis: Ranks products based on defect rates and profitability to identify high-risk products.
+
+Insights: Address high-defect, low-profit products to improve quality and profitability.
+
+
+## **10. Regional Shipping Efficiency: Which regions have the most delays and highest shipping costs?**
+**Objective:** Evaluate regional shipping performance to optimize costs and reduce delays.
+**SQL Query:**
+```sql
+SELECT 
+    Location,
+    AVG(Shipping_times) AS AvgShippingTime,
+    SUM(CASE WHEN Shipping_times > 7 THEN 1 ELSE 0 END) AS DelayedShipments,
+    ROUND(SUM(CASE WHEN Shipping_times > 7 THEN Shipping_costs ELSE 0 END), 2) AS TotalDelayCost,
+    COUNT(*) AS TotalShipments
+FROM 
+    supply_chain_data
+GROUP BY 
+    Location
+ORDER BY 
+    TotalDelayCost DESC, AvgShippingTime DESC;
+
+```
+Analysis: Calculates average shipping times, delays, and costs for each location.
+
+Insights: Focus on improving shipping efficiency in high-cost regions to reduce delays and costs.
+
+## **11. Product Reorder Cycles: What is the average reorder frequency for each product?**
+**Objective:** Determine reorder cycles for products to streamline inventory planning.
+**SQL Query:**
+```sql
+SELECT 
+    Product_type,
+    ROUND(AVG(Lead_times), 2) AS AvgReorderCycle,
+    SUM(Order_quantities) AS TotalUnitsOrdered,
+    AVG(Stock_levels) AS AvgStockOnHand
+FROM 
+    supply_chain_data
+GROUP BY 
+    Product_type
+ORDER BY 
+    AvgReorderCycle DESC, TotalUnitsOrdered DESC;
+```
+
+Analysis: Calculates average lead times for product reordering and evaluates stock levels.
+
+Insights: Align reorder schedules with demand to ensure optimal inventory levels.
+
+
+## **12. Defect Analysis: Which suppliers contribute to the highest defect rates?**
+
+**Objective:** 
+Determine which suppliers and products are associated with high defect rates to improve quality control.
+
+**SQL Query:**
+```sql
+SELECT 
+    Supplier_name,
+    Product_type,
+    COUNT(*) AS TotalInspections,
+    SUM(CASE WHEN Inspection_results = 'Failed' THEN 1 ELSE 0 END) AS TotalDefects,
+    ROUND(SUM(CASE WHEN Inspection_results = 'Failed' THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS DefectRate
+FROM 
+    supply_chain_data
+GROUP BY 
+    Supplier_name, Product_type
+ORDER BY 
+    DefectRate DESC;
+
+```
+
+Analysis: Calculates the defect rate for each supplier and product type by analyzing inspection outcomes.
+
+Insights: High-defect suppliers and products should be targeted for quality improvement initiatives or alternative sourcing.
+
+
+## **13. Supplier Performance: Which suppliers consistently meet lead times?**
+
+**Objective:** 
+Evaluate supplier reliability based on their adherence to promised lead times.
+
+**SQL Query:**
+```sql
+SELECT 
+    Supplier_name,
+    COUNT(*) AS TotalOrders,
+    SUM(CASE WHEN Lead_times <= Manufacturing_lead_time THEN 1 ELSE 0 END) AS OnTimeOrders,
+    ROUND(SUM(CASE WHEN Lead_times <= Manufacturing_lead_time THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS OnTimePercentage
+FROM 
+    supply_chain_data
+GROUP BY 
+    Supplier_name
+HAVING 
+    ROUND(SUM(CASE WHEN Lead_times <= Manufacturing_lead_time THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) >= 40
+ORDER BY 
+    OnTimePercentage DESC;
+```
+
+Analysis: This query calculates the on-time delivery percentage for each supplier by comparing actual lead times with manufacturing lead times.
+
+Insights: Suppliers with high on-time percentages should be prioritized for procurement, while underperforming suppliers may need process improvements or alternative evaluations.
+

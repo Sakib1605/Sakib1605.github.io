@@ -1,115 +1,103 @@
 ---
-title: "Data Visualization Project: Customer Shopping Trends Dashboard"
+title: "Early Patient Readmission Prediction"
 collection: Projects
 permalink: /portfolio/Project_7
-excerpt: 'Developed a comprehensive dashboard analyzing customer behavior and purchasing patterns across various dimensions including product categories, regional trends, age group preferences, subscription status, seasonal behavior, promotions, payment methods, and shipping preferences through interactive visualizations using Google Looker Studio.'
-slidesurl: 'https://github.com/Sakib1605/Customer_Shopping_Trends_Dashboard_using_Looker_Studio/blob/main/Sakibul_Final_Project_Report.pdf'
+excerpt: 'Developed a machine learning pipeline to predict early patient readmissions using a decade of clinical records from 130 US hospitals. Extensive data preprocessing was performed, class imbalance was addressed using SMOTE, and multiple models including Logistic Regression and Random Forest were evaluated, achieving the highest accuracy of 62.2%. Visualization techniques such as ROC curves and confusion matrices were used to assess model performance.'
+slidesurl: 'https://github.com/Sakib1605/Early_Patient_Readmission_Prediction/blob/main/mohammad_data_6300_project.pdf'
 #paperurl: 'http://academicpages.github.io/files/paper1.pdf'
 #citation: 'Your Name, You. (2009). &quot;Paper Title Number 1.&quot; <i>Journal 1</i>. 1(1).'
 ---
 
-# Customer Shopping Trends Dashboard
-
-[Github_Repository_Link](https://github.com/Sakib1605/Customer_Shopping_Trends_Dashboard_using_Looker_Studio)
-
-**Dashboard Link:**  
-[Customer Shopping Trends Dashboard](https://lookerstudio.google.com/reporting/a91040d3-8e66-420e-9d51-6553271e1d93)
-
----
-
-## Abstract
-
-The **Customer Shopping Trends Dashboard** provides a user-friendly interface for analyzing customer behavior and purchasing patterns. It helps businesses align their strategies with customer preferences by offering insights into product categories, regions, age groups, subscription statuses, seasonal behaviors, promotional offers, and more. These insights can assist in optimizing inventory, improving customer experience, and fine-tuning marketing tactics. Additionally, the dashboard includes gender-based comparisons to further assist businesses in tailoring their strategies to meet gender-specific demands.
-
----
+[Github_Repository_Link](https://github.com/Sakib1605/Early_Patient_Readmission_Prediction)
 
 ## Introduction
 
-The dataset for this project is the **Customer Shopping Trends Dataset** from Kaggle, containing various features such as demographics, purchase frequency, preferred shipping and payment methods, and more. It consists of 19 columns categorized into:
+Hospital readmissions, especially early readmissions within 30 days of discharge, are a significant concern in healthcare management. Readmissions not only indicate potential shortcomings in post-discharge care but also contribute to increased healthcare costs. Predicting early readmissions can help hospitals improve patient care, allocate resources more effectively, and reduce operational costs. In this project, the objective is to leverage machine learning models to predict whether a patient will be readmitted within 30 days of discharge, based on historical clinical data.
 
-- **Numeric Variables:** Age, Purchase Amount (USD), Review Rating, Previous Purchases
-- **Categorical Variables:** Gender, Category, Location, Size, Color, Season, Shipping Type, Payment Method, Purchase Frequency
-- **Binary Variables:** Subscription Status (Yes/No), Discount Applied (Yes/No), Promo Code Used (Yes/No)
+The dataset used in this project comprises a decade's worth of clinical records from 130 US hospitals, containing patient demographic details, admission history, diagnostic codes, and medication information. A total of 101,766 records representing 71,518 unique patients are analyzed. The project focuses on transforming the raw dataset into a format suitable for predictive modeling through various data preprocessing techniques, including handling missing data, removing duplicates, and categorizing diagnostic codes.
 
-The primary objective of the dashboard is to detect purchasing patterns and help businesses make data-driven decisions for growth.
+Several machine learning models are implemented to predict patient readmission, including Logistic Regression, Random Forest, Support Vector Machines (SVM), and Gradient Boosting, among others. By applying Synthetic Minority Over-sampling Technique (SMOTE) to address class imbalance, the models are trained and evaluated based on their accuracy and F1-score. Visualization techniques, such as ROC curves and confusion matrices, are used to evaluate the performance of each model.
 
-### Objectives:
-1. Understand customer preferences by analyzing various factors.
-2. Improve customer shopping experiences by gaining insights and adjusting marketing strategies.
+The ultimate goal of this project is to determine the most effective machine learning model for predicting early patient readmissions, which can be applied in hospital systems to optimize patient outcomes and resource allocation.
 
----
 
-## Dashboard Design
+## Data Preprocessing
 
-The dashboard provides an overview of key metrics, such as total customers, subscribed customers, average rating, and sales. It includes filters for date, age group, gender, product category, location, season, and more. Below are the key sections and findings from the dashboard:
+### 1. Removing Duplicate Records
+- The dataset contains duplicate entries based on patient numbers (`patient_nbr`). To maintain data integrity, these duplicates are removed, ensuring each patient is represented only once.
 
-### Product Category Analysis
-- **How do customer preferences change across seasons?**  
-  Key Finding: Footwear is most popular in winter, while clothing is consistent across spring, winter, and fall.
+### 2. Handling Missing Data
+- Columns with a high proportion of missing values, such as `weight`, `payer_code`, and `medical_specialty`, are dropped.
+- Missing values in the `race` column are imputed using the most frequent race category.
 
-- **What are the most popular product categories among male and female customers?**  
-  Key Finding: Clothing and accessories are popular among both genders.
+### 3. Removing Uninformative Features
+- Irrelevant features, including `encounter_id`, `patient_nbr`, and highly imbalanced columns (where over 98% of the values are the same), are removed to optimize classification.
 
-- **How does the average purchase amount vary between male and female customers?**  
-  Key Finding: Accessories have the highest average purchase amounts; gender-based variations are insignificant.
+### 4. Categorizing Diagnostic Features
+- The diagnostic columns (`diag_1`, `diag_2`, `diag_3`) are categorized using ICD-9 codes, improving interpretability.
 
-### Location-Based Analysis
-- **How do customer purchasing habits differ across locations?**  
-  Key Finding: High sales in Montana, California, Idaho, and Illinois.
+### 5. Mapping Admission, Source, and Discharge Categories
+- Admission types, admission sources, and discharge types are replaced with descriptive categories, consolidating similar meanings into one category (e.g., mapping ‘Urgent’ to ‘Emergency’).
 
-- **What are the most popular product categories in the top 5 locations?**  
-  Key Finding: Clothing and accessories are consistently popular across top locations.
+### 6. Handling Age Feature
+- Age ranges are converted into numerical values, with each range assigned a numeric value to correlate with the likelihood of readmission.
 
-- **Which regions have the highest subscription service engagement?**  
-  Key Finding: Montana, California, and Idaho have the highest subscription engagement.
+### 7. Removing Outliers
+- Outliers in numeric columns are removed based on boxplot analysis to ensure consistency.
 
-### Age-Group Analysis
-- **How does the quantity of purchases vary by age group?**  
-  Key Finding: Adults make the highest number of purchases.
+### 8. Handling Drug Medication Features
+- Drug-related features with imbalanced distributions are dropped.
 
-- **What is the purchase frequency among different age groups?**  
-  Key Finding: Adults purchase more frequently compared to young adults and seniors.
+### 9. Transforming Glucose Serum Levels
+- The `max_glu_serum` feature is mapped to numeric values: `None` (0), `Norm` (1), `>200` (2), and `>300` (2).
 
-### Seasonal Purchase Analysis
-- **Which products are most popular during different seasons?**  
-  Key Finding: Coats and jackets dominate winter, while shoes and sandals are popular in fall.
+### 10. Handling Diabetes Medication
+- The `diabetesMed` column is converted to numeric values: `No` (0) and `Yes` (1), due to its observed correlation with readmission rates.
 
-- **What is the seasonal distribution of purchases across categories?**  
-  Key Finding: Accessories peak in spring; footwear sales rise in winter and fall.
+### 11. Change of Medications
+- The `change` column is transformed into numeric: `No` (0) and `Yes` (1), reflecting the impact of medication changes on readmission rates.
 
-- **Which season exhibits high discount usage?**  
-  Key Finding: Discounts are most used in winter.
+### 12. Target Variable Transformation
+- The target variable (`readmitted`) is mapped to numeric values: `NO` (0), `>30` (1), and `<30` (2).
 
-### Payment & Shipping Method Analysis
-- **What payment options do customers prefer?**  
-  Key Finding: Credit cards are the most preferred, followed by PayPal.
+### 13. Categorical Feature Encoding
+- One-hot encoding is applied to transform categorical features into numeric format.
 
-- **Which shipping type is most frequently selected?**  
-  Key Finding: Free shipping is the most preferred, followed by store pickup.
+### 14. Addressing Class Imbalance
+- SMOTE (Synthetic Minority Over-Sampling Technique) is applied to balance the class distribution, improving the generalization and prediction capabilities of the model.
 
-### Rating & Promotional Analysis
-- **How do average ratings vary across product categories based on gender?**  
-  Key Finding: Men rate products slightly higher than women.
+### 15. Data Split
+- The dataset is split into training and testing sets, with 10% allocated for testing purposes.
 
-- **What is the impact of promo code usage on review ratings?**  
-  Key Finding: Promo codes do not significantly affect review ratings.
+## Model Accuracy Analysis
 
-### Subscription Analysis
-- **Which age group is most engaged in subscriptions?**  
-  Key Finding: Adults have the highest subscription involvement.
+Multiple machine learning models were evaluated using training and testing accuracy, and F1 scores (micro). The results are summarized below:
 
-- **Is there a difference in purchasing trends between subscribed and non-subscribed customers?**  
-  Key Finding: Subscribed customers, both male and female, show higher past purchases.
+| Model                  | Training Accuracy | Testing Accuracy | F1-Score (Micro) |
+|------------------------|-------------------|------------------|------------------|
+| Logistic Regression     | 0.634             | 0.622            | 0.622            |
+| Decision Tree           | 0.638             | 0.572            | 0.572            |
+| K Nearest Neighbor      | 0.719             | 0.546            | 0.546            |
+| Naive Bayes             | 0.576             | 0.531            | 0.531            |
+| Support Vector Machine  | 0.675             | 0.617            | 0.617            |
+| Random Forest           | 0.785             | 0.612            | 0.612            |
+| Gradient Boosting       | 0.736             | 0.609            | 0.608            |
+| Bagging Classifier      | 0.689             | 0.604            | 0.604            |
+| Adaboost Classifier     | 0.775             | 0.589            | 0.589            |
 
-- **What is the distribution of promo code usage across subscription status?**  
-  Key Finding: 90% of subscribers use promo codes compared to 20% of non-subscribers.
+## Visualization & Evaluation
 
----
+### 1. ROC Curves and AUC
+ROC curves and AUC (Area Under Curve) values were used to assess the ability of each model to correctly classify instances across different classes.
 
-## Appendix
+### 2. Confusion Matrix
+A heatmap of the confusion matrix was used to visualize the model’s effectiveness by showing counts of correctly and incorrectly predicted instances.
 
-- **Dataset Reference:** [Customer Shopping Trends Dataset](https://www.kaggle.com/datasets/iamsouravbanerjee/customer-shopping-trends-dataset)
-- **Final Dataset Link:** [Download Dataset](https://drive.google.com/file/d/1kwTe5xH7dkqM0iDNCHrt1kJlPkf3deAQ/view?usp=sharing)
-- **Dashboard Link:** [View Dashboard](https://lookerstudio.google.com/reporting/a91040d3-8e66-420e-9d51-6553271e1d93)
+### 3. Bar Plots
+Two bar plots were generated:
+- One demonstrating the testing accuracy for each model.
+- One illustrating F1 scores for each model.
 
----
+## Conclusion
+From the testing accuracy and F1-score comparisons, it was observed that Logistic Regression, Support Vector Machine (SVM), Random Forest, Gradient Boosting, and Bagging Classifier outperformed Decision Tree, KNN, Naive Bayes, and Adaboost Classifier. The best accuracy achieved was 0.622, with Logistic Regression performing the best overall.
+

@@ -1,88 +1,66 @@
 ---
-title: "Statistical Learning Project using R: Case study of Pima Indian Diabetes Dataset"
+title: "Neural Network Project: Symptom Driven Plant Disease Classification"
 collection: Projects
 permalink: /portfolio/Project_6
 excerpt: 'Designed a plant disease diagnosis system using Gemini-Vision-Pro for extracting visual features and generating symptom descriptions from images. Integrated these insights with a multi-modal fusion model to compare symptom based and image-based classification methods, improving classification accuracy.'
-slidesurl: 'https://github.com/Sakib1605/Case_study_Pima_Indian_Diabetes_Dataset/blob/main/STAT_6801_FINAL_PROJECT.pdf'
+slidesurl: 'https://github.com/Sakib1605/Symptom_Driven_Plant_Disease_Classification/blob/main/CIS_6050_Neural_Network_Project_Report.pdf'
 #paperurl: 'http://academicpages.github.io/files/paper1.pdf'
 #citation: 'Your Name, You. (2009). &quot;Paper Title Number 1.&quot; <i>Journal 1</i>. 1(1).'
 ---
+[Github_Repository_Link](https://github.com/Sakib1605/Symptom_Driven_Plant_Disease_Classification)
 
-[Github_Repository_Link](https://github.com/Sakib1605/Case_study_Pima_Indian_Diabetes_Dataset)
 
 ## Abstract
-The primary objective of this project is to evaluate the effectiveness of various classification models in predicting diabetes outcomes using the Pima Indian Diabetes dataset. By comparing performance metrics such as accuracy, precision, recall, and area under the ROC curve (AUC), the project provides a comprehensive assessment of different models. The analysis also identifies key variables impacting the outcome. A two-level ensemble approach, where a combination of Generalized Linear Model (GLM), Generalized Additive Model (GAM), Support Vector Machine (SVM), and Random Forest feeds into a Neural Network for final predictions, achieved the highest accuracy (99%) on the test dataset.
+This project presents a novel approach to plant disease diagnosis by combining image-based classification with predictive symptom analysis. By leveraging both visual and textual features, the approach moves beyond traditional image-only methods, providing a more comprehensive diagnostic tool. The multi-modal system incorporates four Convolutional Neural Network (CNN) models: VGG16, DenseNet, InceptionV3, and a custom-built CNN. DenseNet outperformed other models with a training accuracy of 95.5% and a validation accuracy of 85%. This approach enhances disease diagnosis and has significant potential for sustainable agriculture by providing effective tools for early detection.
 
 ## Introduction
-Diabetes is a chronic disease characterized by high blood sugar due to either insufficient insulin production or ineffective insulin utilization. The Pima Indian Diabetes dataset allows investigation into key demographic and health-related characteristics, offering insights into effective diabetes risk minimization approaches.
 
-## Dataset Description
-The dataset is derived from a study by the National Institute of Diabetes and Digestive and Kidney Disease. It contains health characteristics of 768 adult female Pima Indians, with the aim of detecting key factors influencing diabetes.
+### i. Motivation
+Accurate identification of plant diseases is crucial for ensuring optimal crop yields, food security, and environmental sustainability. Traditional manual methods for diagnosing plant diseases are time-consuming and require expert knowledge. This project aims to automate plant disease classification by using both image and symptom data, leveraging advanced machine learning techniques like Convolutional Neural Networks (CNN) and large language models (LLMs). The goal is to enhance the field of automated plant health monitoring and management, with a specific focus on accurate symptom-driven disease identification.
 
-### Features:
-- **Pregnant**: Number of pregnancies.
-- **Glucose**: Plasma glucose concentration at 2 hours.
-- **Diastolic**: Diastolic blood pressure (mmHg).
-- **Triceps**: Triceps skinfold thickness (mm).
-- **Insulin**: Two-hour serum insulin (mu U/ml).
-- **BMI**: Body mass index.
-- **Diabetes Pedigree**: Probability of diabetes based on family history.
-- **Age**: Age in years.
-- **Test Outcome**: Binary outcome for diabetes (1 = diabetic, 0 = non-diabetic).
+### ii. Significance
+The prevalence of plant diseases has increased due to changes in cultivation methods and inadequate protection measures. Automated methods for disease detection can significantly reduce the need for manual labor and improve monitoring efficiency. By integrating textual symptom descriptions with image analysis, this project provides a more robust tool for plant disease classification.
 
-## Data Pre-processing
-- **Handling Unrealistic Values**: Zero values in glucose, diastolic, triceps, insulin, and BMI were replaced with NA.
-- **Missing Values**: Imputed using the median of the respective column.
-- **Outliers**: Box plots were used to detect and handle outliers.
-- **Feature Importance**: Correlation analysis was performed to assess relationships among variables.
-- **Scaling**: Numeric features were scaled to standardize the dataset.
-- **Data Split**: 100 cases were assigned to the test set, and the remaining data were used for training.
+### iii. Potential Applications
+The proposed system has practical applications in early disease detection, automated monitoring systems, and decision-making processes in agriculture. It offers the potential to reduce economic losses and promote sustainable crop management by providing timely disease diagnosis.
 
-## Model Analysis
+## Problem Statement
+This project addresses the critical challenge of automating plant disease diagnosis by combining image and textual feature analysis. The objective is to classify plant diseases based on both visual features from plant images and textual symptom descriptions. This approach extends traditional methods that rely solely on images and aims to improve the reliability of disease classification.
 
-### Generalized Linear Model (GLM)
-GLMs use logistic regression to predict the binary outcome. Initially, all features were used to train the model, but the stepwise AIC variable selection method was applied to prevent overfitting, improving performance.
+## Methodology
 
-### Generalized Additive Model (GAM)
-GAMs allow flexibility by using smooth functions to capture non-linear patterns. All features were used to train the GAM.
+### i. Dataset Information
+Data for this project was obtained from multiple sources, including "Plant Village" (Hughes et al., 2015), Kaggle, and "Dataset for Crop Pest and Disease Detection" (Mensah et al., 2023). The dataset includes images of both healthy and diseased tomato plants, representing five classes: healthy, Leaf Blight, Leaf Curl, Septoria Leaf Spot, and Verticillium Wilt.
 
-### Decision Trees and Random Forest
-A decision tree was trained, and cross-validation was used to select the optimal tree size. Pruning was applied to simplify the tree. Random Forest, an ensemble approach combining predictions of multiple trees, was also trained.
+### ii. Data Pre-Processing
+To enhance the diversity of training examples, image augmentation techniques such as scaling, rotation, and flipping were applied. The dataset was balanced across classes to ensure the model could generalize effectively.
 
-### Support Vector Machine (SVM)
-Both linear and radial SVM models were applied. The radial SVM, offering a flexible decision boundary, showed better performance than the linear SVM.
+### iii. Model Architecture
+The project utilized CNN architectures, including pretrained models like VGG16, DenseNet, and InceptionV3, as well as a custom CNN. These models were used for image feature extraction, while a multi-modal fusion technique was employed to integrate textual symptom descriptions with the CNN output.
 
-### K-Nearest Neighbor (KNN)
-KNN was trained on the scaled data, and hyperparameter tuning was applied to optimize performance.
+DenseNet emerged as the top-performing model, achieving a training accuracy of 95.5% and a validation accuracy of 85%. The fusion of image and text features allowed for more accurate disease classification compared to image-only methods.
 
-### Neural Networks
-- **Unscaled Data**: A neural network with two hidden layers was trained on the unscaled data.
-- **Scaled Data**: A neural network with 10 hidden layers was trained on the scaled data, which resulted in better performance.
+### iv. Symptom Prediction
+Gemini-Vision-Pro, a language model, was used to generate symptom descriptions from plant images. These descriptions were then integrated into the classification process using a multi-modal fusion approach.
 
-### Two-Level Ensemble Approach
-The first level included GLM, GAM, SVM, KNN, and Random Forest. Their predictions were used as inputs to a Neural Network in the second level. This approach achieved the highest accuracy.
+## Evaluation
 
-### Majority Voting Ensemble
-Predictions from GLM, GAM, SVM, KNN, Random Forest, and Neural Networks were combined using majority voting.
+### i. Classification Accuracy
+DenseNet demonstrated the best performance among the CNN models, achieving a training accuracy of 95.5% and a validation accuracy of 85% after 10 epochs. Evaluation metrics such as precision, recall, and F1-score were used to assess model performance.
 
-## Evaluation Metrics
-- **Accuracy**: Measures the correct predictions over the total cases.
-- **Confusion Matrix**: Provides true positives, true negatives, false positives, and false negatives.
-- **Precision and Recall**: Precision measures the accuracy of positive predictions, while recall measures the model’s ability to identify positive cases.
-- **ROC Curve**: Visual representation of the model’s ability to differentiate between classes, with AUC used to quantify performance.
+### ii. Symptom Prediction Accuracy
+Cosine similarity was used to compare generated symptoms with reference texts. The model performed well for diseases like Leaf Blight and Septoria Leaf Spot, achieving high similarity scores.
+
+### iii. ROC-AUC Scores
+All disease classes achieved ROC-AUC scores above 90%, indicating the model’s ability to distinguish between classes effectively.
 
 ## Results
-| Model                       | Accuracy | False Positive Rate | False Negative Rate | Precision | Recall | AUC   |
-|-----------------------------|----------|---------------------|---------------------|-----------|--------|-------|
-| Generalized Linear Model     | 0.76     | 0.076               | 0.542               | 0.923     | 0.759  | 0.6901|
-| Random Forest                | 0.98     | 0.0153              | 0.0286              | 0.9846    | 0.9846 | 0.978 |
-| Two-Level Ensemble           | 0.99     | 0                   | 0.0286              | 1         | 0.9848 | 0.9857|
+DenseNet outperformed other CNN models in the multi-modal fusion architecture. The system’s accuracy was further enhanced by combining image features with symptom descriptions. The multi-modal approach achieved higher classification accuracy compared to image-only methods, even when using fewer images.
 
 ## Conclusion
-The two-level ensemble approach proved to be the most effective model, achieving 99% accuracy. Random Forest also performed well with 98% accuracy. Feature scaling played a significant role in improving the performance of the neural network model. The analysis showed that glucose is the most significant predictor for diabetes, followed by BMI and age.
+The integration of image and textual data via multi-modal fusion improved the classification accuracy of plant disease diagnosis. DenseNet, in particular, showed strong performance with 95.5% training accuracy and 85% validation accuracy. The project demonstrates that combining image data with symptom descriptions offers a more reliable and comprehensive method for plant disease diagnosis. Future work could explore incorporating external factors like weather and geographical data to further enhance disease classification.
 
 ## References
-1. World Health Organization, Diabetes [accessed on 2023] Retrieved from: [WHO](https://www.who.int/health-topics/diabetes#tab=tab_1).
-2. Benarbia, Meriem, "A Machine Learning Approach to Predicting the Onset of Type II Diabetes in a Sample of Pima Indian Women" (2022). CUNY Academic Works.
-3. Abedini, M., Bijari, A., and Banirostam, T. (2020). Classification of Pima Indian diabetes dataset using ensemble models. Ijarcce, vol. 9, no. 7, pp. 1–4.
-4. Dataset: [Pima Indians Diabetes Database](https://www.kaggle.com/datasets/uciml/pima-indians-diabetes-database).
+- Hughes, David and Salathé, Marcel. "An open access repository of images on plant health to enable the development of mobile disease diagnostics." arXiv preprint arXiv:1511.0800.
+- Mensah, Kwabena Patrick, et al. "Dataset for Crop Pest and Disease Detection." Mendeley Data, 2023.
+- Alsakar, Yasmin M., et al. "Plant disease detection and classification using machine learning and deep learning techniques: Current trends and challenges." World Conference on Internet of Things, 2023.

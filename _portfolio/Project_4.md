@@ -1,66 +1,103 @@
 ---
-title: "Neural Network Project: Symptom Driven Plant Disease Classification"
+title: "Machine Learning Project: Movie Recommendation & Insights Analysis"
 collection: Projects
 permalink: /portfolio/Project_4
-excerpt: 'Designed a plant disease diagnosis system using Gemini-Vision-Pro for extracting visual features and generating symptom descriptions from images. Integrated these insights with a multi-modal fusion model to compare symptom based and image-based classification methods, improving classification accuracy.'
-slidesurl: 'https://github.com/Sakib1605/Symptom_Driven_Plant_Disease_Classification/blob/main/CIS_6050_Neural_Network_Project_Report.pdf'
+excerpt: 'Utilized natural language processing (NLP) and machine learning techniques to extract valuable insights from a movie dataset. Developed a content-based movie recommendation system that suggests films based on similarities in movie descriptions, leveraging NLP to analyze and compare textual data. Implemented multilabel genre classification by analyzing movie overviews, enabling the categorization of films into multiple genres simultaneously. Additionally, predicted movie ratings using various features such as genre, budget, and revenue, applying machine learning methods and feature importance analysis.'
+slidesurl: 'https://github.com/Sakib1605/Movie_Recommendation_and_Insights_Analysis/blob/main/DATA_6300_FINAL_PROJECT_REPORT_Mohammad.pdf'
 #paperurl: 'http://academicpages.github.io/files/paper1.pdf'
 #citation: 'Your Name, You. (2009). &quot;Paper Title Number 1.&quot; <i>Journal 1</i>. 1(1).'
 ---
-[Github_Repository_Link](https://github.com/Sakib1605/Symptom_Driven_Plant_Disease_Classification)
 
-
-## Abstract
-This project presents a novel approach to plant disease diagnosis by combining image-based classification with predictive symptom analysis. By leveraging both visual and textual features, the approach moves beyond traditional image-only methods, providing a more comprehensive diagnostic tool. The multi-modal system incorporates four Convolutional Neural Network (CNN) models: VGG16, DenseNet, InceptionV3, and a custom-built CNN. DenseNet outperformed other models with a training accuracy of 95.5% and a validation accuracy of 85%. This approach enhances disease diagnosis and has significant potential for sustainable agriculture by providing effective tools for early detection.
-
+[Github_Repository_Link](https://github.com/Sakib1605/Movie_Recommendation_and_Insights_Analysis)
 ## Introduction
 
-### i. Motivation
-Accurate identification of plant diseases is crucial for ensuring optimal crop yields, food security, and environmental sustainability. Traditional manual methods for diagnosing plant diseases are time-consuming and require expert knowledge. This project aims to automate plant disease classification by using both image and symptom data, leveraging advanced machine learning techniques like Convolutional Neural Networks (CNN) and large language models (LLMs). The goal is to enhance the field of automated plant health monitoring and management, with a specific focus on accurate symptom-driven disease identification.
+With the plethora of movies available on the internet these days, viewers often face difficulty in finding movies that align with their interests. Relying entirely on genre-based searches may overlook individual preferences, highlighting the importance of content-based movie suggestions. By leveraging movie descriptions and plot summaries, content-based movie recommendation systems can facilitate the exploration of similar movies that match viewer preferences.
 
-### ii. Significance
-The prevalence of plant diseases has increased due to changes in cultivation methods and inadequate protection measures. Automated methods for disease detection can significantly reduce the need for manual labor and improve monitoring efficiency. By integrating textual symptom descriptions with image analysis, this project provides a more robust tool for plant disease classification.
+Moreover, genre classification based on movie plot descriptions facilitates efficient genre categorization by identifying frequently used words in movie descriptions or themes associated with genres. Accurate genre classification helps audiences find movies that align with their preferred genres.
 
-### iii. Potential Applications
-The proposed system has practical applications in early disease detection, automated monitoring systems, and decision-making processes in agriculture. It offers the potential to reduce economic losses and promote sustainable crop management by providing timely disease diagnosis.
+Understanding audience preferences and gaining insights into factors influencing movie success is crucial in the film industry. This emphasizes the need for exploratory analysis and movie ratings prediction, which offers insights into key features contributing to a movie’s success and helps understand audience preferences.
+
+The motivation behind this project lies in enhancing movie exploration and improving user satisfaction by suggesting more relevant movies, effectively categorizing movies into genres based on content, and uncovering key features associated with audience engagement.
 
 ## Problem Statement
-This project addresses the critical challenge of automating plant disease diagnosis by combining image and textual feature analysis. The objective is to classify plant diseases based on both visual features from plant images and textual symptom descriptions. This approach extends traditional methods that rely solely on images and aims to improve the reliability of disease classification.
 
-## Methodology
+The primary objective of the project is to employ natural language processing (NLP) and machine learning methods to derive meaningful insights from a movie dataset. The project comprises three tasks:
 
-### i. Dataset Information
-Data for this project was obtained from multiple sources, including "Plant Village" (Hughes et al., 2015), Kaggle, and "Dataset for Crop Pest and Disease Detection" (Mensah et al., 2023). The dataset includes images of both healthy and diseased tomato plants, representing five classes: healthy, Leaf Blight, Leaf Curl, Septoria Leaf Spot, and Verticillium Wilt.
+- **Content-based Movie Recommendation**: Develop a content-based recommendation system using NLP techniques to suggest movies based on similarities in movie descriptions. This involves analyzing movie descriptions and identifying semantic similarities.
+  
+- **Genre Classification Based on Movie Content**: Use NLP techniques to analyze textual content from movie overviews and develop classification models to categorize movies into multiple genres simultaneously. This is a multilabel classification problem.
+  
+- **Movie Ratings Prediction**: Predict movie ratings by analyzing features such as genre, budget, revenue, runtime, language, and production companies. Conduct feature importance analysis to identify key factors impacting movie ratings.
 
-### ii. Data Pre-Processing
-To enhance the diversity of training examples, image augmentation techniques such as scaling, rotation, and flipping were applied. The dataset was balanced across classes to ensure the model could generalize effectively.
+## Method
 
-### iii. Model Architecture
-The project utilized CNN architectures, including pretrained models like VGG16, DenseNet, and InceptionV3, as well as a custom CNN. These models were used for image feature extraction, while a multi-modal fusion technique was employed to integrate textual symptom descriptions with the CNN output.
+### 3.1 Dataset Information and Preprocessing
 
-DenseNet emerged as the top-performing model, achieving a training accuracy of 95.5% and a validation accuracy of 85%. The fusion of image and text features allowed for more accurate disease classification compared to image-only methods.
+- **Dataset**: Data on 50 movies with 26 feature columns was initially extracted via web scraping from IMDb. This data was merged with a publicly available movie dataset from Kaggle, resulting in a final dataframe of 432,410 movies with 20 feature columns.
 
-### iv. Symptom Prediction
-Gemini-Vision-Pro, a language model, was used to generate symptom descriptions from plant images. These descriptions were then integrated into the classification process using a multi-modal fusion approach.
+- **Preprocessing Steps**:
+  1. **Handling Duplicate Movie Names**: Removed duplicate entries to ensure unique representation of each movie.
+  2. **Handling Missing Values**: Removed columns with high percentages of missing values and imputed missing values for some categorical columns.
+  3. **Data Type Conversion**: Converted columns to appropriate data types for consistency in analysis.
+  4. **Handling Outliers**: Removed movies with unusual runtimes.
+  5. **Feature Extraction**: Extracted release year and month from the release date.
+  6. **One-hot Encoding for Genres**: Applied one-hot encoding to convert genre categories into binary features.
+  7. **Text Preprocessing**: Preprocessed movie overviews by removing punctuation, eliminating stop words, and converting text to lowercase.
+  8. **Removing Unnecessary Columns**: Removed irrelevant columns for movie ratings prediction.
+  9. **Scaling Numerical Features**: Scaled numerical features to prevent feature dominance.
 
-## Evaluation
+### 3.2 Modelling
 
-### i. Classification Accuracy
-DenseNet demonstrated the best performance among the CNN models, achieving a training accuracy of 95.5% and a validation accuracy of 85% after 10 epochs. Evaluation metrics such as precision, recall, and F1-score were used to assess model performance.
+- **Movie Recommendation System**:
+  - **Word2Vec Approach**: Utilized word embeddings to capture semantic relationships. Combined "title," "overview," and "genre" columns into a "content" column, trained the Word2Vec model, and calculated cosine similarity to recommend similar movies.
+  
+  - **TF-IDF Approach**: Used TF-IDF vectorization to convert text data into numerical vectors. Calculated cosine similarity to suggest top 10 similar movies.
 
-### ii. Symptom Prediction Accuracy
-Cosine similarity was used to compare generated symptoms with reference texts. The model performed well for diseases like Leaf Blight and Septoria Leaf Spot, achieving high similarity scores.
+- **Movie Genre Classification**:
+  - Applied preprocessing techniques to movie content text data, converted text into numerical vectors using TF-IDF, and trained classification models such as Logistic Regression, Random Forest, Gradient Boosting, and Adaboost Classifier. Evaluated models using precision, recall, and f1-score.
 
-### iii. ROC-AUC Scores
-All disease classes achieved ROC-AUC scores above 90%, indicating the model’s ability to distinguish between classes effectively.
+- **Movie Ratings Prediction**:
+  - Trained various regression models including Linear Regression, Ridge Regression, Support Vector Regressor, Decision Tree Regressor, Random Forest, Extreme Gradient Boosting, and Bagging Regressor. Evaluated model performance using MSE and MAE, and conducted feature importance analysis.
 
-## Results
-DenseNet outperformed other CNN models in the multi-modal fusion architecture. The system’s accuracy was further enhanced by combining image features with symptom descriptions. The multi-modal approach achieved higher classification accuracy compared to image-only methods, even when using fewer images.
+## Results and Discussion
+
+### 4.1 Results for Exploratory Data Analysis
+
+- **Genre Analysis**:
+  - Distribution of movie counts across genres shows Drama, Documentary, and Comedy as the most prevalent genres.
+  - Most common words in movie descriptions vary by genre, providing insights into content variations.
+  - Co-occurrences of genres reveal patterns such as Action movies frequently co-occurring with Drama and Adventure.
+
+- **Rating Analysis**:
+  - Documentary and Animation genres receive higher average ratings from 2010 to 2023.
+
+- **Revenue Analysis**:
+  - Average revenue for certain genres decreased from 2021 to 2022, with increases in genres like Action and Adventure.
+
+- **Runtime Analysis**:
+  - Movies with runtimes between 120-180 minutes have the highest average popularity.
+
+- **Movie Language Analysis**:
+  - English is the most prevalent language in the dataset.
+
+- **Popularity Analysis**:
+  - Adventure is the most popular genre in 2023.
+
+### 4.2 Machine Learning Results
+
+- **Movie Recommendation System Results**:
+  - Both Word2Vec and TF-IDF approaches effectively recommend movies similar to the selected movie based on content and genre.
+
+- **Genre Classification Results**:
+  - Logistic Regression performed well for certain genres, while Random Forest and Gradient Boosting also showed effective results for specific genres. Adaboost Classifier had moderate performance.
+
+- **Movie Ratings Prediction Results**:
+  - Ensemble methods like Random Forest, Gradient Boosting, and Bagging Regressor outperformed individual models. Feature importance analysis identified rating count, runtime, release year, and popularity as significant factors affecting movie ratings.
 
 ## Conclusion
-The integration of image and textual data via multi-modal fusion improved the classification accuracy of plant disease diagnosis. DenseNet, in particular, showed strong performance with 95.5% training accuracy and 85% validation accuracy. The project demonstrates that combining image data with symptom descriptions offers a more reliable and comprehensive method for plant disease diagnosis. Future work could explore incorporating external factors like weather and geographical data to further enhance disease classification.
+
+The project successfully employed NLP and machine learning techniques to address challenges in movie recommendations, genre classification, and ratings prediction. Key contributions include enhanced movie discovery, effective content categorization, and valuable audience insights. This project improves movie exploration, categorization, and understanding of factors influencing movie success.
 
 ## References
-- Hughes, David and Salathé, Marcel. "An open access repository of images on plant health to enable the development of mobile disease diagnostics." arXiv preprint arXiv:1511.0800.
-- Mensah, Kwabena Patrick, et al. "Dataset for Crop Pest and Disease Detection." Mendeley Data, 2023.
-- Alsakar, Yasmin M., et al. "Plant disease detection and classification using machine learning and deep learning techniques: Current trends and challenges." World Conference on Internet of Things, 2023.
+
+[1] Asaniczka. (2023). TMDB Movies Dataset. Retrieved from: [Kaggle TMDB Movies Dataset](https://www.kaggle.com/datasets/asaniczka/tmdb-movies-dataset-2023-930k-movies)
